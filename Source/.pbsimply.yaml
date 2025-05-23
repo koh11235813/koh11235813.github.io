@@ -42,7 +42,7 @@ alt_frontmatter:
 self_url_prefix: /kinoko1943.jp/
 #
 # Generated document's URL absolute prefix. This value replaces reading /. Used by page_url_encoded_external.
-self_url_external_prefix: https://example.com/
+#self_url_external_prefix: https://example.com/
 # Database format. use JSON if set json or oj.
 #dbstyle: json
 #
