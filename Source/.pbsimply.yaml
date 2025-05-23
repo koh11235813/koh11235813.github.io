@@ -12,7 +12,7 @@ template: ./template.html
 # This values must be *server's URL*.
 # This settings is not avilable on rdoc, rdoc_markdown, kramdown, redcarpet or cmark engine.
 css: 
-  - /css/style.css
+  - ./css/style.css
 # Enable TOC. true or false. false by default.
 # This settings is not avilable on rdoc, rdoc_markdown, kramdown, redcarpet, cmark or docutils engine.
 # toc: true
@@ -24,7 +24,7 @@ staticdir:
   - css
   - img
 js:
-  - /javascript/sidebar-toggle.js
+  - ./javascript/sidebar-toggle.js
 post_eruby: true
 # Default metadata. If same key exists in document's frontmatter, document's frontmatter is given priority to this settings.
 default_meta:
