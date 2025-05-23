@@ -1,6 +1,8 @@
 ---
 title: minecraftのサーバーの設定とか
 date: 2025-05-23
+author: kinoko1943
+pagetype: post
 category: server
 ---
 

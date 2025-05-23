@@ -1,6 +1,8 @@
 ---
 title: pihole を RHEL9 へ移管したときのメモ
 date: 2025-05-21
+author: kinoko1943
+pagetype: post
 category: server
 ---
 
