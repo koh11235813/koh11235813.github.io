@@ -40,7 +40,7 @@ alt_frontmatter:
 #testserver_port: 8000
 #
 # Generated document's URL absolute prefix. This value replaces reading /.
-self_url_prefix: /kinoko1943.jp/
+self_url_prefix: /.
 #
 # Generated document's URL absolute prefix. This value replaces reading /. Used by page_url_encoded_external.
 #self_url_external_prefix: https://example.com/
