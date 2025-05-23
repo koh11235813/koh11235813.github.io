@@ -1,0 +1,18 @@
+<img src="/img/profile.jpg" alt="プロフィール画像" style="width: 100%; border-radius: 50%; margin-bottom: 1rem;" />
+<h3>kinoko1943</h3>
+<p>趣味で部屋にサーバーを飼っています。</p>
+<% require 'yaml' %>
+<% if File.exist?("menu.yaml") %>
+  <% puts "[DEBUG] menu.yaml found" %>
+  <% menu = YAML.load_file("menu.yaml") %>
+  <% puts menu.inspect %>
+  <nav id="NavigationColumn">
+    <ul>
+      <% menu.each do |title, path| %>
+        <li><a href="<%= path %>"><%= title %></a></li>
+      <% end %>
+    </ul>
+  </nav>
+<% else %>
+  <% puts "[ERROR] menu.yaml not found" %>
+<% end %>

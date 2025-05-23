@@ -1,10 +1,9 @@
 ---
-title: First article
-date: 1970-01-01
+title: Main Page
+date: 2025-5-21
 ---
 
-# This is first article
+# This is kinoko1943's top page
 
-This file is shown at top page.
-
-The first step, edit index.md file on document source root.
+ここはkinoko1943のホームページです
+[Secured by Let's Encrypt](https://letsencrypt.org/)

@@ -23,6 +23,9 @@ $endif$
 $for(css)$
   <link rel="stylesheet" href="$css$" />
 $endfor$
+$for(js)$
+  <script src="$js$" defer></script>
+$endfor$
 $if(math)$
   $math$
 $endif$
@@ -32,7 +35,7 @@ $endif$
 $for(header-includes)$
   $header-includes$
 $endfor$
-  <script src="/javascript/lightbox.js" defer="defer"></script>
+  <script src="/javascript/sidebar-toggle.js" defer="defer"></script>
 </head>
   <body>
     <header id="TopHeader">
@@ -43,8 +46,12 @@ $if(subtitle)$
       <p class="subtitle">$subtitle$</p>
 $endif$
     </header>
-    <section id="MainContainer">
-      <article id="MainArticle">
+    <button id="menuToggle" class="menu-toggle">☰</button>
+    <section id="ContentContainer">
+$if(date)$
+      <p class="date">$date$</p>
+$endif$
+        <article id="MainArticle">
 $if(toc)$
         <nav id="$idprefix$TOC" class="toc">
 $table-of-contents$
@@ -59,9 +66,6 @@ $body$
       </section>
     </section>
     <footer>
-$if(date)$
-      <p class="date">$date$</p>
-$endif$
 $for(include-after)$
 $include-after$
 $endfor$

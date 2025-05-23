@@ -6,25 +6,30 @@ outdir: ../Build
 #
 # Template file path.
 # ./template.html by default.
-template: template.erb
+template: ./template.html
 #
 # Loading CSS files (userd by Pandoc's default template.)
 # This values must be *server's URL*.
 # This settings is not avilable on rdoc, rdoc_markdown, kramdown, redcarpet or cmark engine.
-#css:
-#  - /css/layout.css
-#  - /css/base.css#
+css: 
+  - /css/style.css
 # Enable TOC. true or false. false by default.
 # This settings is not avilable on rdoc, rdoc_markdown, kramdown, redcarpet, cmark or docutils engine.
 # toc: true
 #
 # Enable eRuby template expansion. true or false. false by default.
 # This settings is not avilable on rdoc, rdoc_markdown, kramdown, redcarpet or cmark engine.
-post_eruby: false
+staticdir:
+  - javascript
+  - css
+  - img
+js:
+  - /javascript/sidebar-toggle.js
+post_eruby: true
 # Default metadata. If same key exists in document's frontmatter, document's frontmatter is given priority to this settings.
 default_meta:
-  author: "John Doe"
-  site_title: "My first blog"
+  author: "kinoko1943"
+  site_title: ""
 #
 # Override every ACCS index page's frontmatter.
 alt_frontmatter:
@@ -60,24 +65,24 @@ self_url_external_prefix: https://example.com/
 #################################################
 # Pandoc engine option
 #################################################
-#pbsimply_processor: pandoc
+pbsimply_processor: pandoc
 #
 # Pandoc's default file settings.
 # It is merge into default file. See https://pandoc.org/MANUAL.html#default-files
 # This option used only by pandoc engine.
-#pandoc_additional_options:
-#  metadata:
-#    lang: ja
-#    title-prefix: "Powered by PureBuilder Simply"
-#  include-before-body:
-#    - before.html
-#  include-after-body:
-#    - after.html
-#
+pandoc_additional_options:
+  metadata:
+    lang: ja
+    title-prefix: "Powered by PureBuilder Simply"
+  include-before-body:
+    - before.html
+  include-after-body:
+    - after.html
+
 #################################################
 # Kramdown engine option
 #################################################
-pbsimply_processor: kramdown
+#pbsimply_processor: kramdown
 # An associative array passed as the second argument to `Kramdown::Document.new`. See the https://kramdown.gettalong.org/rdoc/Kramdown/Options.html for detail.
 #kramdown_features: {}
 #

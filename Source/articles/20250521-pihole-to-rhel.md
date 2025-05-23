@@ -1,7 +1,7 @@
 ---
-title: Untitled series 1
+title: 自宅サーバー
 date: 2025-05-21
-category: network, dns, server, linux, pihole
+category: server
 ---
 
 
