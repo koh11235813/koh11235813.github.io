@@ -1,5 +1,5 @@
 ---
-title: 自宅サーバー
+title: pihole を RHEL9 へ移管したときのメモ
 date: 2025-05-21
 category: server
 ---
@@ -11,17 +11,17 @@ category: server
 
 |port|protocol|service name|Notes|
 |----|----|----|----|
-|53|udp,tcp|dns|If you happen to have another DNS server running, such as BIND, you will need to turn it off in order for Pi-hole to respond to DNS queries.|
-|67|udp|ipv4 dhcp|The DHCP server is an optional feature that requires additional ports.|
-|80|tcp|http|If you have another webserver already listening on port 80 will attempt to bind to 8080 instead. If neither of these ports are available, pihole-FTL's webserver will be unavailable until ports are configured manually (see configuration option webserver.port)|
-|123|udp|NTP|The NTP server is an optional feature that requires an additional port.|
-|443|tcp|https|If you have another webserver already listening on port 443 will attempt to bind to 8443 instead. If neither of these ports are available, pihole-FTL's webserver will be unavailable until ports are configured manually (see configuration option webserver.port)|
-|547|udp|ipv6 dhcp|The DHCP server is an optional feature that requires additional ports.|
+|53|udp,tcp|dns|DNSサーバーとして使用されるポート.|
+|67|udp|ipv4 dhcp|dhcpサーバーとして使用することを選択したとき，ipv4アドレスのために使用されるポート.|
+|80|tcp|http|すでに使用されている場合，8080ポートを代替として使用する.もしくはwebserver.portオプションで変更できる.|
+|123|udp|NTP|ntpサーバーとして使用することを選択したときに使用するポート.|
+|443|tcp|https|すでに使用されている場合，8443ポートを代替として使用する.もしくはwebserver.portオプションで変更できる.|
+|547|udp|ipv6 dhcp|dhcpサーバーとして使用することを選択したとき，ipv6アドレスのために使用されるポート.|
 
-最低限開けないといけないのは53, 80, 443ポート。
+最低限開けないといけないのは53, 80, 443ポート．
 
 
-これらを開けておかないとpiholeのwebページ(?)にアクセスできない。
+これらを開けておかないとpiholeのwebページ(?)にアクセスできない．
 
 ```
 sudo firewall-cmd --add-port=53/tcp --permanent
@@ -33,14 +33,14 @@ sudo firewall-cmd --add-port=443/tcp --permanent
 確認
 `sudo firewall-cmd --list-ports`
 
-設定できていれば以下のような表示を確認できるはずです。
+設定できていれば以下のような表示を確認できるはずです．
 ```
 ports: 53/tcp 53/udp 80/tcp 443/tcp
 ```
 
 ## [SELinuxの無効化またはPermissiveモードに変更](https://docs.redhat.com/ja/documentation/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/sect-security-enhanced_linux-working_with_selinux-changing_selinux_modes)
 
-piholeはインストールするときにSELinuxかどうかをチェックし，SELinuxが`Enforcing`である場合はインストールが途中で止まる。
+piholeはインストールするときにSELinuxかどうかをチェックし，SELinuxが`Enforcing`である場合はインストールが途中で止まる．
 ```
 sudo vim /etc/selinux/config
 # もしくは
@@ -64,25 +64,25 @@ SELINUXTYPE=targeted
 ```bash
 curl -sSL https://install.pi-hole.net | export PIHOLE_SKIP_OS_CHECK=true sudo bash
 ```
-上記を実行するだけ。
-何かエラーが出たらメッセージをググるなりすると解決策が見つかると思います。
+上記を実行するだけ．
+何かエラーが出たらメッセージをググるなりすると解決策が見つかると思います．
 
-インストールが最後までできたらログインするパスワード<pwd>を変えます。
+インストールが最後までできたらログインするパスワード<pwd>を変えます．
 
 
-piholeはデフォルトで/usr/local/bin/に配置される。sudoするときはPATHが通っていないことが多いのでフルパスでコマンドを入れるか、自分で設定する必要がある。
+piholeはデフォルトで/usr/local/bin/に配置される．sudoするときはPATHが通っていないことが多いのでフルパスでコマンドを入れるか、自分で設定する必要がある．
 
 ```
 sudo /usr/local/bin/pihole setpassword <pwd>
 ```
 
-ここまでできたらwebブラウザからpiholeを入れたサーバーのipアドレス:443/adminでwebページが見えると思う。
+ここまでできたらwebブラウザからpiholeを入れたサーバーのipアドレス:443/adminでwebページが見えると思う．
 
 `<ip address>:443/admin`
-自分がやったときは80番(HTTP)ではssl証明書がないなどと言われてアクセスできなかったので443番(HTTPS)でログインした。
+自分がやったときは80番(HTTP)ではssl証明書がないなどと言われてアクセスできなかったので443番(HTTPS)でログインした．
 
 ### adblock list をリロードする
-このままでもいいが，adblock listのリロードにはCLIを叩く必要がある。
+このままでもいいが，adblock listのリロードにはCLIを叩く必要がある．
 ```
 sudo /usr/local/bin/pihole -g
 ```
@@ -102,11 +102,11 @@ root # exit
 $
 ```
 
-rootの`crontab`に入れることでsudoしないといけないのを回避。
+rootの`crontab`に入れることでsudoしないといけないのを回避．
 
 ## おまけ
 ### piholeのポート変更
-piholeの設定ファイルは`/etc/pihole/pihole.toml`にある。
+piholeの設定ファイルは`/etc/pihole/pihole.toml`にある．
 ```
 $ cat /etc/pihole/pihole.toml |grep 'port ='
   port = 53
@@ -114,8 +114,8 @@ $ cat /etc/pihole/pihole.toml |grep 'port ='
   port = "80o,443os,[::]:80o,[::]:443os"
 $ 
 ```
-このポート`port = "80o,443os,[::]:80o,[::]:443os"`を変更することで(特にウェブページのポートを変更したい場合)開放するポートを変更できる。
-設定が終わったらpiholeを再起動する。
+このポート`port = "80o,443os,[::]:80o,[::]:443os"`を変更することで(特にウェブページのポートを変更したい場合)開放するポートを変更できる．
+設定が終わったらpiholeを再起動する．
 ```
 sudo service pihole-FTL restart
 # もしくは

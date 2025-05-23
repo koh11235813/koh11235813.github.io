@@ -136,11 +136,8 @@ body, html {
     order: 2;
 }
 @media screen and (max-width: 799px) {
-  .menu-toggle {
-    display: block;
-  }
   #ContentContainer { 
-    flex-direction: column; 
+    flex-direction: row; 
   }
   #MainArticle {
     order: 1;
@@ -151,6 +148,9 @@ body, html {
     display: none; /* 初期は非表示 */
   }
   #SideBar.open {
+    display: block;
+  }
+  .menu-toggle {
     display: block;
   }
 }

@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="kinoko1943" />
   <meta name="dcterms.date" content="2025-05-21" />
-  <title>Powered by PureBuilder Simply – 自宅サーバー</title>
+  <title>Powered by PureBuilder
+Simply – pihole を RHEL9 へ移管したときのメモ</title>
   <link rel="stylesheet" href="/css/style.css" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -17,9 +18,9 @@
     <header id="TopHeader">
     </header>
     <header id="TitleHeader">
-      <h1 class="title">自宅サーバー</h1>
+      <h1 class="title">pihole を RHEL9 へ移管したときのメモ</h1>
     </header>
-    <button id="menuToggle" class="menu-toggle">☰ メニュー</button>
+    <button id="menuToggle" class="menu-toggle">☰</button>
     <section id="ContentContainer">
       <p class="date">2025-05-21</p>
         <article id="MainArticle">
@@ -48,63 +49,52 @@ href="https://docs.pi-hole.net/main/prerequisites/#ports">pihole
 <td>53</td>
 <td>udp,tcp</td>
 <td>dns</td>
-<td>If you happen to have another DNS server running, such as BIND, you
-will need to turn it off in order for Pi-hole to respond to DNS
-queries.</td>
+<td>DNSサーバーとして使用されるポート.</td>
 </tr>
 <tr class="even">
 <td>67</td>
 <td>udp</td>
 <td>ipv4 dhcp</td>
-<td>The DHCP server is an optional feature that requires additional
-ports.</td>
+<td>dhcpサーバーとして使用することを選択したとき，ipv4アドレスのために使用されるポート.</td>
 </tr>
 <tr class="odd">
 <td>80</td>
 <td>tcp</td>
 <td>http</td>
-<td>If you have another webserver already listening on port 80 will
-attempt to bind to 8080 instead. If neither of these ports are
-available, pihole-FTL’s webserver will be unavailable until ports are
-configured manually (see configuration option webserver.port)</td>
+<td>すでに使用されている場合，8080ポートを代替として使用する.もしくはwebserver.portオプションで変更できる.</td>
 </tr>
 <tr class="even">
 <td>123</td>
 <td>udp</td>
 <td>NTP</td>
-<td>The NTP server is an optional feature that requires an additional
-port.</td>
+<td>ntpサーバーとして使用することを選択したときに使用するポート.</td>
 </tr>
 <tr class="odd">
 <td>443</td>
 <td>tcp</td>
 <td>https</td>
-<td>If you have another webserver already listening on port 443 will
-attempt to bind to 8443 instead. If neither of these ports are
-available, pihole-FTL’s webserver will be unavailable until ports are
-configured manually (see configuration option webserver.port)</td>
+<td>すでに使用されている場合，8443ポートを代替として使用する.もしくはwebserver.portオプションで変更できる.</td>
 </tr>
 <tr class="even">
 <td>547</td>
 <td>udp</td>
 <td>ipv6 dhcp</td>
-<td>The DHCP server is an optional feature that requires additional
-ports.</td>
+<td>dhcpサーバーとして使用することを選択したとき，ipv6アドレスのために使用されるポート.</td>
 </tr>
 </tbody>
 </table>
-<p>最低限開けないといけないのは53, 80, 443ポート。</p>
-<p>これらを開けておかないとpiholeのwebページ(?)にアクセスできない。</p>
+<p>最低限開けないといけないのは53, 80, 443ポート．</p>
+<p>これらを開けておかないとpiholeのwebページ(?)にアクセスできない．</p>
 <pre><code>sudo firewall-cmd --add-port=53/tcp --permanent
 sudo firewall-cmd --add-port=80/tcp --permanent
 sudo firewall-cmd --add-port=443/tcp --permanent</code></pre>
 <p>再読込 <code>sudo firewall-cmd --reload</code> 確認
 <code>sudo firewall-cmd --list-ports</code></p>
-<p>設定できていれば以下のような表示を確認できるはずです。</p>
+<p>設定できていれば以下のような表示を確認できるはずです．</p>
 <pre><code>ports: 53/tcp 53/udp 80/tcp 443/tcp</code></pre>
 <h2 id="selinuxの無効化またはpermissiveモードに変更"><a
 href="https://docs.redhat.com/ja/documentation/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/sect-security-enhanced_linux-working_with_selinux-changing_selinux_modes">SELinuxの無効化またはPermissiveモードに変更</a></h2>
-<p>piholeはインストールするときにSELinuxかどうかをチェックし，SELinuxが<code>Enforcing</code>である場合はインストールが途中で止まる。</p>
+<p>piholeはインストールするときにSELinuxかどうかをチェックし，SELinuxが<code>Enforcing</code>である場合はインストールが途中で止まる．</p>
 <pre><code>sudo vim /etc/selinux/config
 # もしくは
 sudo nano /etc/selinux/config</code></pre>
@@ -123,17 +113,17 @@ SELINUXTYPE=targeted</code></pre>
 href="https://discourse.pi-hole.net/t/unsupported-os-cant-skip-os-check/35686">*</a></h2>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-sSL</span> https://install.pi-hole.net <span class="kw">|</span> <span class="bu">export</span> <span class="va">PIHOLE_SKIP_OS_CHECK</span><span class="op">=</span>true <span class="va">sudo</span> <span class="va">bash</span></span></code></pre></div>
-<p>上記を実行するだけ。
-何かエラーが出たらメッセージをググるなりすると解決策が見つかると思います。</p>
-<p>インストールが最後までできたらログインするパスワード<pwd>を変えます。</p>
-<p>piholeはデフォルトで/usr/local/bin/に配置される。sudoするときはPATHが通っていないことが多いのでフルパスでコマンドを入れるか、自分で設定する必要がある。</p>
+<p>上記を実行するだけ．
+何かエラーが出たらメッセージをググるなりすると解決策が見つかると思います．</p>
+<p>インストールが最後までできたらログインするパスワード<pwd>を変えます．</p>
+<p>piholeはデフォルトで/usr/local/bin/に配置される．sudoするときはPATHが通っていないことが多いのでフルパスでコマンドを入れるか、自分で設定する必要がある．</p>
 <pre><code>sudo /usr/local/bin/pihole setpassword &lt;pwd&gt;</code></pre>
-<p>ここまでできたらwebブラウザからpiholeを入れたサーバーのipアドレス:443/adminでwebページが見えると思う。</p>
+<p>ここまでできたらwebブラウザからpiholeを入れたサーバーのipアドレス:443/adminでwebページが見えると思う．</p>
 <p><code>&lt;ip address&gt;:443/admin</code>
-自分がやったときは80番(HTTP)ではssl証明書がないなどと言われてアクセスできなかったので443番(HTTPS)でログインした。</p>
+自分がやったときは80番(HTTP)ではssl証明書がないなどと言われてアクセスできなかったので443番(HTTPS)でログインした．</p>
 <h3 id="adblock-list-をリロードする">adblock list をリロードする</h3>
 <p>このままでもいいが，adblock
-listのリロードにはCLIを叩く必要がある。</p>
+listのリロードにはCLIを叩く必要がある．</p>
 <pre><code>sudo /usr/local/bin/pihole -g</code></pre>
 <p>めんどくさいので<code>crontab</code>に入れる</p>
 <pre><code>$ sudo su
@@ -142,17 +132,17 @@ root # crontab -e</code></pre>
 <p>毎日午前1時に更新</p>
 <pre><code>root # exit
 $</code></pre>
-<p>rootの<code>crontab</code>に入れることでsudoしないといけないのを回避。</p>
+<p>rootの<code>crontab</code>に入れることでsudoしないといけないのを回避．</p>
 <h2 id="おまけ">おまけ</h2>
 <h3 id="piholeのポート変更">piholeのポート変更</h3>
-<p>piholeの設定ファイルは<code>/etc/pihole/pihole.toml</code>にある。</p>
+<p>piholeの設定ファイルは<code>/etc/pihole/pihole.toml</code>にある．</p>
 <pre><code>$ cat /etc/pihole/pihole.toml |grep &#39;port =&#39;
   port = 53
   DBimport = true
   port = &quot;80o,443os,[::]:80o,[::]:443os&quot;
 $ </code></pre>
-<p>このポート<code>port = "80o,443os,[::]:80o,[::]:443os"</code>を変更することで(特にウェブページのポートを変更したい場合)開放するポートを変更できる。
-設定が終わったらpiholeを再起動する。</p>
+<p>このポート<code>port = "80o,443os,[::]:80o,[::]:443os"</code>を変更することで(特にウェブページのポートを変更したい場合)開放するポートを変更できる．
+設定が終わったらpiholeを再起動する．</p>
 <pre><code>sudo service pihole-FTL restart
 # もしくは
 sudo systemctl restart pihole-FTL.service</code></pre>
@@ -182,9 +172,7 @@ sudo systemctl restart pihole-FTL.service</code></pre>
               </section>
     </section>
     <footer>
-<section id="footer">
-    Copyright 2025 kinoko1943,  Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
-</section>
+Copyright 2025 kinoko1943,  Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
     </footer>
 </body>
 </html>
