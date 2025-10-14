@@ -9,7 +9,7 @@ author: kinoko1943
 ここはkinoko1943のホームページです
 
 書いた記事はここにあります．
-* [Articles](/article)
+* [Articles](/articles)
 
 githubです．
 * [github](https://github.com/koh11235813)
