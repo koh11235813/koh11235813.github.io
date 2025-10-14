@@ -154,11 +154,14 @@ body, html {
     display: block;
   }
 }
+
   /* light mode scheme */
+
 @media (prefers-color-scheme: light) {
   body {
     background-color: #f0f0f0;
   }
+
   p {
     color: #1d1d1d;
   }
