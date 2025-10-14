@@ -125,15 +125,16 @@ body, html {
   text-align: left;
 }
 @media screen and (min-width: 800px) {
-  #ContentContainer {
-    flex-direction: row;
+    #ContentContainer {
+      flex-direction: row;
+    }
+    #MainArticle {
+      order: 1;
+      width: 100%;
+    }
+    #SideBar {
+      order: 2;
   }
-  #MainArticle {
-    order: 1;
-    width: 100%;
-  }
-  #SideBar {
-    order: 2;
 }
 @media screen and (max-width: 799px) {
   #ContentContainer { 

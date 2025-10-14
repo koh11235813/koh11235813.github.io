@@ -1,10 +1,18 @@
 ---
 title: Main Page
-date: 2025-5-21
+date: 
 author: kinoko1943
 ---
 
 # This is kinoko1943's top page
 
 ここはkinoko1943のホームページです
+
+書いた記事はここにあります．
+* [Articles](/article)
+
+githubです．
+* [github](https://github.com/koh11235813)
+
+
 [Secured by Let's Encrypt](https://letsencrypt.org/)
