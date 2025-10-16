@@ -15,8 +15,9 @@ css:
   - css/style.css
   - css/before.css
   - css/after.css
-js:
+javascript:
   - javascript/before-Toggle.js
+  - javascript/lightbox.js
 # Enable TOC. true or false. false by default.
 # This settings is not avilable on rdoc, rdoc_markdown, kramdown, redcarpet, cmark or docutils engine.
 # toc: true

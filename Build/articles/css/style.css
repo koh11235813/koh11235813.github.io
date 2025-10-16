@@ -248,13 +248,14 @@ img, video { max-width: 100%; height: auto; }
 html[data-theme="light"] .light-only { display: initial; }
 html[data-theme="light"] .dark-only { display: none; }
 
-/* ==== Qiita-like header ==== */
+/* ==== header ==== */
 .site-header {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 12px;
   align-items: center;
   margin: 12px 0 0;
+  z-index: 1200;
 }
 .site-brand { display: flex; align-items: center; gap: 12px; }
 .site-icon { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; }

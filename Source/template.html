@@ -21,11 +21,12 @@ $if(description)$
 $endif$
   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
 $for(css)$
-  <link rel="stylesheet" href="$css$" />
+  <link rel="stylesheet" href="$baseurl$$css$" />
 $endfor$
-$for(js)$
-  <script src="$js$" defer></script>
+$for(javascript)$
+  <script src="$baseurl$$javascript$" defer></script>
 $endfor$
+<script src="$baseurl$javascript/before-Toggle.js" defer></script>
 $if(math)$
   $math$
 $endif$
@@ -35,7 +36,6 @@ $endif$
 $for(header-includes)$
   $header-includes$
 $endfor$
-  <script src="javascript/before-Toggle.js" defer="defer"></script>
 </head>
   <body>
     <header id="TopHeader">
