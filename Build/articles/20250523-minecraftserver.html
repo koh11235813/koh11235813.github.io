@@ -6,27 +6,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="kinoko1943" />
   <meta name="dcterms.date" content="2025-05-23" />
-  <title>Powered by PureBuilder
+  <title>Copyright 2025 kinoko1943, Powered by PureBuilder
 Simply – minecraftのサーバーの設定とか</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/before.css" />
+  <link rel="stylesheet" href="css/after.css" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-  <script src="javascript/sidebar-toggle.js" defer="defer"></script>
+  <script src="javascript/before-Toggle.js" defer="defer"></script>
 </head>
   <body>
     <header id="TopHeader">
     </header>
     <header id="TitleHeader">
       <h1 class="title">minecraftのサーバーの設定とか</h1>
-    </header>
-    <button id="menuToggle" class="menu-toggle">☰</button>
+          </header>
+    <button id="menu-Toggle" class="menu-Toggle"aria-controls="before" aria-expanded="false"> ☰</button>
     <section id="ContentContainer">
-      <p class="date">2025-05-23</p>
-        <article id="MainArticle">
-<h1 id="minecraftの起動">minecraftの起動</h1>
-<p>systemdのデーモンとしてシステム起動時に自動起動するように設定している．</p>
-<pre><code># /etc/systemd/system/minecraft.service
+      <div id="scrim" hidden></div>
+      <section id="before">
+                <img src="img/profile.jpg" img class="avatar" alt="プロフィール画像" />
+                <h3>kinoko1943</h3>
+                <p>Toyohashi University of Technology</p>
+              </section>
+      <article id="MainArticle">
+                <h1 id="minecraftの起動">minecraftの起動</h1>
+                <p>systemdのデーモンとしてシステム起動時に自動起動するように設定している．</p>
+                <pre><code># /etc/systemd/system/minecraft.service
 [Unit]
 Description=bootstrap service
 After=network-online.target
@@ -42,12 +49,12 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target</code></pre>
-<p>その他，crontabで毎日6時，18時に停止スクリプトが走るようになっている</p>
-<pre><code># minecraft
+                <p>その他，crontabで毎日6時，18時に停止スクリプトが走るようになっている</p>
+                <pre><code># minecraft
 0 6 * * * /home/kinoko/minecraft-server/mc1.20.1/stop.sh
 0 18 * * * /home/kinoko/minecraft-server/mc1.20.1/stop.sh</code></pre>
-<p>ExecStopを使用しないのはプレイしている途中であった場合に安全地帯まで行けるようにするため</p>
-<pre><code>kinoko@kinoko-server:~/minecraft-server/mc1.20.1$ cat stop.sh 
+                <p>ExecStopを使用しないのはプレイしている途中であった場合に安全地帯まで行けるようにするため</p>
+                <pre><code>kinoko@kinoko-server:~/minecraft-server/mc1.20.1$ cat stop.sh 
 #!/bin/bash
 /usr/bin/screen -S minecraft -X stuff &quot;say this server will be shutdown in 60s\015&quot;
 /bin/sleep 30
@@ -69,8 +76,8 @@ kinoko@kinoko-server:~/minecraft-server/mc1.20.1$ cat stop_now.sh
 /usr/bin/screen -S minecraft -X stuff &quot;stop\015&quot;
 rm $HOME/minecraft-server/mc1.20.1/world.zip
 /usr/bin/zip -r $HOME/minecraft-server/mc1.20.1/world.zip $HOME/minecraft-server/mc1.20.1/world</code></pre>
-<p>起動スクリプト</p>
-<pre><code>kinoko@kinoko-server:~/minecraft-server/mc1.20.1$ cat run.sh 
+                <p>起動スクリプト</p>
+                <pre><code>kinoko@kinoko-server:~/minecraft-server/mc1.20.1$ cat run.sh 
 #!/usr/bin/env sh
 # Forge requires a configured set of both JVM and program arguments.
 # Add custom JVM arguments to the user_jvm_args.txt
@@ -81,12 +88,9 @@ rm $HOME/minecraft-server/mc1.20.1/world.zip
 screen -S minecraft -U -d -m java -Xms12G -Xmx12G @libraries/net/minecraftforge/forge/1.20.1-47.3.5/unix_args.txt &quot;$@&quot;
 # $JAVA_HOME=&quot;~/../../usr/lib/jvm/java-1.21.0-openjdk-amd64/bin&quot;
 # java -Xms8G -Xmx10G -jar forge-1.20.1-47.3.5-server.jar --nogui</code></pre>
-<p>実質<code>screen ...</code>の一行だけである．</p>
+                <p>実質<code>screen ...</code>の一行だけである．</p>
       </article>
-      <section id="SideBar">
-                <img src="img/profile.jpg" alt="プロフィール画像" style="width: 100%; border-radius: 50%; margin-bottom: 1rem;" />
-                <h3>kinoko1943</h3>
-                <p>趣味で部屋にサーバーを飼っています。</p>
+      <section id="after">
                 
                 
                   
@@ -105,7 +109,7 @@ screen -S minecraft -U -d -m java -Xms12G -Xmx12G @libraries/net/minecraftforge/
               </section>
     </section>
     <footer>
-Copyright 2025 kinoko1943,  Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
+      Copyright 2025 kinoko1943, Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
     </footer>
 </body>
 </html>

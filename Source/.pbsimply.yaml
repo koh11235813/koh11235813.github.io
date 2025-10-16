@@ -13,6 +13,10 @@ template: ./template.html
 # This settings is not avilable on rdoc, rdoc_markdown, kramdown, redcarpet or cmark engine.
 css: 
   - css/style.css
+  - css/before.css
+  - css/after.css
+js:
+  - javascript/before-Toggle.js
 # Enable TOC. true or false. false by default.
 # This settings is not avilable on rdoc, rdoc_markdown, kramdown, redcarpet, cmark or docutils engine.
 # toc: true
@@ -23,8 +27,6 @@ staticdir:
   - javascript
   - css
   - img
-js:
-  - javascript/sidebar-toggle.js
 post_eruby: true
 # Default metadata. If same key exists in document's frontmatter, document's frontmatter is given priority to this settings.
 default_meta:
@@ -74,7 +76,7 @@ pbsimply_processor: pandoc
 pandoc_additional_options:
   metadata:
     lang: ja
-    title-prefix: "Powered by PureBuilder Simply"
+    title-prefix: "Copyright 2025 kinoko1943, Powered by PureBuilder Simply"
   include-before-body:
     - before.html
   include-after-body:

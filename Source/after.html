@@ -1,1 +1,15 @@
-Copyright 2025 kinoko1943,  Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
+<% require 'yaml' %>
+<% if File.exist?("menu.yaml") %>
+  <% puts "[DEBUG] menu.yaml found" %>
+  <% menu = YAML.load_file("menu.yaml") %>
+  <% puts menu.inspect %>
+  <nav id="NavigationColumn">
+    <ul>
+      <% menu.each do |title, path| %>
+        <li><a href="<%= path %>"><%= title %></a></li>
+      <% end %>
+    </ul>
+  </nav>
+<% else %>
+  <% puts "[ERROR] menu.yaml not found" %>
+<% end %>

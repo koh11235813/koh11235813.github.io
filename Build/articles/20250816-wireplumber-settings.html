@@ -6,54 +6,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="kinoko1943" />
   <meta name="dcterms.date" content="2025-08-17" />
-  <title>Powered by PureBuilder
+  <title>Copyright 2025 kinoko1943, Powered by PureBuilder
 Simply – Wireplumber下でオーディオルーティング</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/before.css" />
+  <link rel="stylesheet" href="css/after.css" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-  <script src="javascript/sidebar-toggle.js" defer="defer"></script>
+  <script src="javascript/before-Toggle.js" defer="defer"></script>
 </head>
   <body>
     <header id="TopHeader">
     </header>
     <header id="TitleHeader">
       <h1 class="title">Wireplumber下でオーディオルーティング</h1>
-    </header>
-    <button id="menuToggle" class="menu-toggle">☰</button>
+          </header>
+    <button id="menu-Toggle" class="menu-Toggle"aria-controls="before" aria-expanded="false"> ☰</button>
     <section id="ContentContainer">
-      <p class="date">2025-08-17</p>
-        <article id="MainArticle">
-<blockquote>
-<p>コミックマーケットC106でとよぎぃそふとへ寄稿した記事です．</p>
-</blockquote>
-<h1
-id="pipewirewireplumberを使用したオーディオリンク">pipewire/wireplumberを使用したオーディオリンク</h1>
-<h2 id="はじめに">はじめに</h2>
-<p>はじめまして，B4のkinokoです．この記事ではlinuxディストリビューションでよく使用されるオーディオシステムであるwireplumber/pipewireの音声出力リンク構築方法について書きます．</p>
-<p>本記事はオーディオ出力設定ファイルを変更するので，設定を間違えると途中で音が出力されなくなったり，音声入出力デバイスが消えたりします．自己責任で変更を行ってください．</p>
-<h2 id="動作環境">動作環境</h2>
-<ul>
-<li>pipewire 1:1.4.x</li>
-<li>wireplumber 0.5.x</li>
-</ul>
-<p>基本的にディストリビューションの差はないと思います．検証環境にはArch
-Linuxを使用しました． wireplumberの設定ファイルの書き方が 0.4.xと
-0.5.xでは異なります(fn-0)．</p>
-<h2 id="動機">動機</h2>
-<p>linuxでobsを利用した画面録画をする際にデフォルトだと，出力を全てキャプチャしてしまう(デフォルト出力sinkしか存在しない)ため個別に専用の仮想出力を作成して録画を見返したときに邪魔な音が入らないようにしたかったからです．</p>
-<h2 id="実装">実装</h2>
-<p>今回はsystemdのtimerをトリガーとした方式とwireplumberのLua
-APIを使用した方式で実装します．</p>
-<p>両方の方式でpipewireの仮想出力を設定する必要があります．</p>
-<p>デフォルトの出力で出力を行っても問題はありませんが，単純に出力音量が2倍になりますし，肝心の<strong>個別に出力させたいという目的</strong>が達成できないため，仮想出力を新規で作成することをおすすめします．</p>
-<p>仮想出力はpipewireの設定ファイル，
-<code>~/.config/pipewire/pipewire.conf.d/</code>に書き込んだあと，再起動を行うことで，設定が読み込まれます．
-また，ログアウト&amp;ログイン
-もしくは，<code>systemctl --user restart wireplumber</code>でも読み込まれます．
-<code>10-null-sink.conf</code>は，gitlabのpipewireの設定例(fn-1)そのままです．</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode conf"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">context.objects</span> <span class="op">=</span> <span class="op">[</span></span>
+      <div id="scrim" hidden></div>
+      <section id="before">
+                <img src="img/profile.jpg" img class="avatar" alt="プロフィール画像" />
+                <h3>kinoko1943</h3>
+                <p>Toyohashi University of Technology</p>
+              </section>
+      <article id="MainArticle">
+                <blockquote>
+                <p>コミックマーケットC106でとよぎぃそふとへ寄稿した記事です．</p>
+                </blockquote>
+                <h1
+                id="pipewirewireplumberを使用したオーディオリンク">pipewire/wireplumberを使用したオーディオリンク</h1>
+                <h2 id="はじめに">はじめに</h2>
+                <p>はじめまして，B4のkinokoです．この記事ではlinuxディストリビューションでよく使用されるオーディオシステムであるwireplumber/pipewireの音声出力リンク構築方法について書きます．</p>
+                <p>本記事はオーディオ出力設定ファイルを変更するので，設定を間違えると途中で音が出力されなくなったり，音声入出力デバイスが消えたりします．自己責任で変更を行ってください．</p>
+                <h2 id="動作環境">動作環境</h2>
+                <ul>
+                <li>pipewire 1:1.4.x</li>
+                <li>wireplumber 0.5.x</li>
+                </ul>
+                <p>基本的にディストリビューションの差はないと思います．検証環境にはArch
+                Linuxを使用しました．
+                wireplumberの設定ファイルの書き方が 0.4.xと
+                0.5.xでは異なります(fn-0)．</p>
+                <h2 id="動機">動機</h2>
+                <p>linuxでobsを利用した画面録画をする際にデフォルトだと，出力を全てキャプチャしてしまう(デフォルト出力sinkしか存在しない)ため個別に専用の仮想出力を作成して録画を見返したときに邪魔な音が入らないようにしたかったからです．</p>
+                <h2 id="実装">実装</h2>
+                <p>今回はsystemdのtimerをトリガーとした方式とwireplumberのLua
+                APIを使用した方式で実装します．</p>
+                <p>両方の方式でpipewireの仮想出力を設定する必要があります．</p>
+                <p>デフォルトの出力で出力を行っても問題はありませんが，単純に出力音量が2倍になりますし，肝心の<strong>個別に出力させたいという目的</strong>が達成できないため，仮想出力を新規で作成することをおすすめします．</p>
+                <p>仮想出力はpipewireの設定ファイル，
+                <code>~/.config/pipewire/pipewire.conf.d/</code>に書き込んだあと，再起動を行うことで，設定が読み込まれます．
+                また，ログアウト&amp;ログイン
+                もしくは，<code>systemctl --user restart wireplumber</code>でも読み込まれます．
+                <code>10-null-sink.conf</code>は，gitlabのpipewireの設定例(fn-1)そのままです．</p>
+                <div class="sourceCode" id="cb1"><pre
+                class="sourceCode conf"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">context.objects</span> <span class="op">=</span> <span class="op">[</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">{   </span><span class="dt">factory</span><span class="op"> =</span> <span class="dt">adapter</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">args</span><span class="op"> =</span> <span class="op">{</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">            </span><span class="dt">factory.name</span><span class="op">     =</span> <span class="dt">support.null-audio-sink</span></span>
@@ -70,11 +78,12 @@ class="sourceCode conf"><code class="sourceCode toml"><span id="cb1-1"><a href="
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="op">        }</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="op">    }</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div>
-<p>//footnote[fn-0][https://pipewire.pages.freedesktop.org/wireplumber/daemon/configuration/migration.html#config-migration]
-//footnote[fn-1][https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Virtual-Devices#single-nodes]</p>
-<h3 id="リンクの確認方法">リンクの確認方法</h3>
-<p>各ノードのリンクがどのようになっているかを知るためには，<code>pw-link -l</code>または<code>pw-top</code>を使用します．</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pw-link <span class="at">-l</span></span>
+                <p>//footnote[fn-0][https://pipewire.pages.freedesktop.org/wireplumber/daemon/configuration/migration.html#config-migration]
+                //footnote[fn-1][https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Virtual-Devices#single-nodes]</p>
+                <h3 id="リンクの確認方法">リンクの確認方法</h3>
+                <p>各ノードのリンクがどのようになっているかを知るためには，<code>pw-link -l</code>または<code>pw-top</code>を使用します．</p>
+                <div class="sourceCode" id="cb2"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pw-link <span class="at">-l</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">my-sink:playback_FL</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="op">&lt;</span>- <span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FL</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">my-sink:playback_FR</span></span>
@@ -101,14 +110,15 @@ class="sourceCode conf"><code class="sourceCode toml"><span id="cb1-1"><a href="
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> my-sink:playback_FR</span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> upmix-5.1-sink:playback_FR</span>
 <span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> my-sink-2:playback_FR</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pw-top</span></code></pre></div>
-<p>//image[pw-link][実行結果][width=140mm]</p>
-<h3 id="systemdによる実装">systemdによる実装</h3>
-<p>前もって設定しておいた<strong>アプリケーション名が含まれる音声ノード</strong>を検知した際，自動で<code>pw-link</code>コマンドを打たせることで，仮想出力には設定されたアプリケーションからの音声だけを出力させます．</p>
-<p>わからない場合は<code>top</code>などを使って探してください．</p>
-<h4 id="スクリプトの作成">スクリプトの作成</h4>
-<p>監視をするスクリプトと<code>pw-link</code>を実行するスクリプトを分けて作成します．少なくとも，これらは分けずとも動作することを確認しています．</p>
-<pre><code>#!/bin/bash
+                <div class="sourceCode" id="cb3"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pw-top</span></code></pre></div>
+                <p>//image[pw-link][実行結果][width=140mm]</p>
+                <h3 id="systemdによる実装">systemdによる実装</h3>
+                <p>前もって設定しておいた<strong>アプリケーション名が含まれる音声ノード</strong>を検知した際，自動で<code>pw-link</code>コマンドを打たせることで，仮想出力には設定されたアプリケーションからの音声だけを出力させます．</p>
+                <p>わからない場合は<code>top</code>などを使って探してください．</p>
+                <h4 id="スクリプトの作成">スクリプトの作成</h4>
+                <p>監視をするスクリプトと<code>pw-link</code>を実行するスクリプトを分けて作成します．少なくとも，これらは分けずとも動作することを確認しています．</p>
+                <pre><code>#!/bin/bash
 
 # アプリケーション名
 APP_NAME=&quot;&quot;
@@ -132,14 +142,15 @@ pw-link &quot;$NODE_ID&quot; &quot;$TARGET_NODE&quot;
 
 # debug output
 echo pw-link &quot;$NODE_ID&quot; &quot;$TARGET_NODE&quot; </code></pre>
-<p><code>link-audio</code>内で，<code>pw-cli list-objects | grep ...</code>としている部分は，一度ターミナル上でも実行してみることをおすすめします．実行した結果が，目的のオーディオノード名になっていることを確認してください．</p>
-<p>その後，スクリプトに実行許可を与えます．</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> chmod 755 <span class="va">$HOME</span>/.config/systemd/user/watch-proc.sh</span>
+                <p><code>link-audio</code>内で，<code>pw-cli list-objects | grep ...</code>としている部分は，一度ターミナル上でも実行してみることをおすすめします．実行した結果が，目的のオーディオノード名になっていることを確認してください．</p>
+                <p>その後，スクリプトに実行許可を与えます．</p>
+                <div class="sourceCode" id="cb5"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> chmod 755 <span class="va">$HOME</span>/.config/systemd/user/watch-proc.sh</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> chmod 755 <span class="va">$HOME</span>/.config/systemd/user/link-audio.sh</span></code></pre></div>
-<h4 id="systemd-ユニットファイルの作成">systemd
-ユニットファイルの作成</h4>
-<p>ユニットファイルを作成します．今回は，GUIターゲットのため，基本的に，ユーザー権限で動作させたほうが良いでしょう．</p>
-<pre><code>[Unit]
+                <h4 id="systemd-ユニットファイルの作成">systemd
+                ユニットファイルの作成</h4>
+                <p>ユニットファイルを作成します．今回は，GUIターゲットのため，基本的に，ユーザー権限で動作させたほうが良いでしょう．</p>
+                <pre><code>[Unit]
 Description=Watch process and start pwlink
 After=network.target pipewire.service pipewire-pulse.service
 
@@ -152,16 +163,17 @@ StandardError=journal
 
 [Install]
 WantedBy=default.target</code></pre>
-<p>ユニットファイルの作成後，以下のようにコマンドを打って，サービスを有効化・起動します．</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> systemctl <span class="at">--user</span> daemon-reload</span>
+                <p>ユニットファイルの作成後，以下のようにコマンドを打って，サービスを有効化・起動します．</p>
+                <div class="sourceCode" id="cb7"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> systemctl <span class="at">--user</span> daemon-reload</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> systemctl <span class="at">--user</span> enable <span class="at">--now</span> watch-proc.service</span></code></pre></div>
-<p>何かエラーが出ている場合は，<code>journalctl</code>や<code>systemctl --user status</code>などを見て確認してください．</p>
-<h3
-id="wireplumberのluaスクリプトで実装する">wireplumberのLuaスクリプトで実装する</h3>
-<p>wireplumberは0.5.xから設定の書き方が変更され，ユーザー設定の場所も変更されました(fn-2)．設定ファイルは，<code>~/.config/wireplumber/wireplumber.conf.d</code>，スクリプトは，<code>~/.local/share/wireplumber/scripts</code>に配置します(fn-3)．</p>
-<p>まずはスクリプトを読みこませる設定ファイルを作成します(fn-4)．</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode conf"><code class="sourceCode toml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">wireplumber.components</span> <span class="op">=</span> <span class="op">[</span></span>
+                <p>何かエラーが出ている場合は，<code>journalctl</code>や<code>systemctl --user status</code>などを見て確認してください．</p>
+                <h3
+                id="wireplumberのluaスクリプトで実装する">wireplumberのLuaスクリプトで実装する</h3>
+                <p>wireplumberは0.5.xから設定の書き方が変更され，ユーザー設定の場所も変更されました(fn-2)．設定ファイルは，<code>~/.config/wireplumber/wireplumber.conf.d</code>，スクリプトは，<code>~/.local/share/wireplumber/scripts</code>に配置します(fn-3)．</p>
+                <p>まずはスクリプトを読みこませる設定ファイルを作成します(fn-4)．</p>
+                <div class="sourceCode" id="cb8"><pre
+                class="sourceCode conf"><code class="sourceCode toml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">wireplumber.components</span> <span class="op">=</span> <span class="op">[</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">name</span><span class="op"> =</span> <span class="st">&quot;90-hello-world.lua&quot;</span><span class="op">, </span><span class="dt">type</span><span class="op"> =</span> <span class="dt">script</span><span class="op">/</span><span class="dt">lua</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">provides</span><span class="op"> =</span> <span class="dt">hello-world</span></span>
@@ -178,8 +190,8 @@ class="sourceCode conf"><code class="sourceCode toml"><span id="cb8-1"><a href="
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">custom-policy</span><span class="op"> =</span> <span class="dt">required</span></span>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="op">    }</span></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>スクリプトを作成します．今回は，例として，Firefoxをmy-sinkにリンクさせています．</p>
-<pre><code>SimpleEventHook {
+                <p>スクリプトを作成します．今回は，例として，Firefoxをmy-sinkにリンクさせています．</p>
+                <pre><code>SimpleEventHook {
     name = &quot;linking/auto-link-hook&quot;,
     interests = {
         EventInterest {
@@ -234,20 +246,20 @@ class="sourceCode conf"><code class="sourceCode toml"><span id="cb8-1"><a href="
         end
     end
 }:register()</code></pre>
-<p>このスクリプトは，オーディオセッションが追加されるたびに呼び出され，<code>if si_props["node.name"] == "Firefox" then</code>で目的のノードが存在するセッションかどうかを判定します．次に，仮想出力が存在するかを確認した後，<code>create_and_activate_link</code>関数でノード同士をリンクさせています．</p>
-<p>すべて終わったら，再起動を行うことで，設定が読み込まれます．
-こちらも，ログアウト&amp;ログイン
-もしくは，<code>systemctl --user restart wireplumber</code>でも読み込まれます．</p>
-<p>//footnote[fn-2][https://pipewire.pages.freedesktop.org/wireplumber/daemon/configuration/migration.html]
-//footnote[fn-3][https://pipewire.pages.freedesktop.org/wireplumber/daemon/locations.html]
-//footnote[fn-4][https://pipewire.pages.freedesktop.org/wireplumber/scripting/custom_scripts.html]</p>
-<h3 id="その他設定小技">その他，設定・小技</h3>
-<h4
-id="wireplumberで普段使用しない出力を消す">wireplumberで普段使用しない出力を消す</h4>
-<p>普段使用しない音声出力(物理)は，もしその出力が選択されてしまった場合に，混乱の原因になるため，デフォルトで出力の存在を消します．</p>
-<p>まずは消したい出力の名前を調べます．</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wpctl status</span>
+                <p>このスクリプトは，オーディオセッションが追加されるたびに呼び出され，<code>if si_props["node.name"] == "Firefox" then</code>で目的のノードが存在するセッションかどうかを判定します．次に，仮想出力が存在するかを確認した後，<code>create_and_activate_link</code>関数でノード同士をリンクさせています．</p>
+                <p>すべて終わったら，再起動を行うことで，設定が読み込まれます．
+                こちらも，ログアウト&amp;ログイン
+                もしくは，<code>systemctl --user restart wireplumber</code>でも読み込まれます．</p>
+                <p>//footnote[fn-2][https://pipewire.pages.freedesktop.org/wireplumber/daemon/configuration/migration.html]
+                //footnote[fn-3][https://pipewire.pages.freedesktop.org/wireplumber/daemon/locations.html]
+                //footnote[fn-4][https://pipewire.pages.freedesktop.org/wireplumber/scripting/custom_scripts.html]</p>
+                <h3 id="その他設定小技">その他，設定・小技</h3>
+                <h4
+                id="wireplumberで普段使用しない出力を消す">wireplumberで普段使用しない出力を消す</h4>
+                <p>普段使用しない音声出力(物理)は，もしその出力が選択されてしまった場合に，混乱の原因になるため，デフォルトで出力の存在を消します．</p>
+                <p>まずは消したい出力の名前を調べます．</p>
+                <div class="sourceCode" id="cb10"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wpctl status</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">PipeWire</span> <span class="st">&#39;pipewire-0&#39;</span> [1.4.6, kinoko@archlinux, cookie:3553775109]</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">└─</span> Clients:</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="ex">38.</span> xdg-desktop-portal-hyprland         [1.4.6, kinoko@archlinux, pid:1679]</span>
@@ -299,9 +311,9 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#
 <span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a><span class="ex">Settings</span></span>
 <span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a> <span class="ex">└─</span> Default Configured Devices:</span></code></pre></div>
-<p>上記の出力結果から，消したい出力(43)について調べます．</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wpctl inspect 43</span>
+                <p>上記の出力結果から，消したい出力(43)について調べます．</p>
+                <div class="sourceCode" id="cb11"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wpctl inspect 43</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">id</span> 43, type PipeWire:Interface:Node</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.card</span> = <span class="st">&quot;1&quot;</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.card_name</span> = <span class="st">&quot;HDA ATI HDMI&quot;</span></span>
@@ -351,8 +363,8 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#
 <span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>    <span class="ex">port.group</span> = <span class="st">&quot;playback&quot;</span></span>
 <span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> priority.driver = <span class="st">&quot;632&quot;</span></span>
 <span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> priority.session = <span class="st">&quot;632&quot;</span></span></code></pre></div>
-<p>この中の，<code>node.name</code>の<code>alsa_output.pci-0000_03_00.1</code>がこのデバイス名です．これを消す設定を書きます．</p>
-<pre><code>monitor.alsa.rules = [
+                <p>この中の，<code>node.name</code>の<code>alsa_output.pci-0000_03_00.1</code>がこのデバイス名です．これを消す設定を書きます．</p>
+                <pre><code>monitor.alsa.rules = [
   {
     matches = [
       {
@@ -366,9 +378,9 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#
     }
   }
 ]</code></pre>
-<p>この設定で，出力を消すことができます．</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wpctl status</span>
+                <p>この設定で，出力を消すことができます．</p>
+                <div class="sourceCode" id="cb13"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wpctl status</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Audio</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Devices:</span>
@@ -386,16 +398,16 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  <span class="pp">*</span>   63. Yamaha AG03MK2 Analog Stereo        [vol: 1.00]</span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>     111. Built-in Audio Analog Stereo        [vol: 1.00]</span>
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a> <span class="ex">...</span></span></code></pre></div>
-<h4
-id="pipewireのサンプルレートを上げる">pipewireのサンプルレートを上げる</h4>
-<p><code>~/.config/pipewire/pipewire.conf.d/10-rate.conf</code>のような設定を作成します(fn-5)．</p>
-<pre><code># Adds more common rates
+                <h4
+                id="pipewireのサンプルレートを上げる">pipewireのサンプルレートを上げる</h4>
+                <p><code>~/.config/pipewire/pipewire.conf.d/10-rate.conf</code>のような設定を作成します(fn-5)．</p>
+                <pre><code># Adds more common rates
 context.properties = {
     default.clock.allowed-rates = [ 44100 48000 88200 96000 192000 ]
 }</code></pre>
-<p>元の設定ファイル(fn-6)のデフォルトサンプルレートを変更することで，サンプルレートを変更します．</p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ll /usr/share/pipewire/             </span>
+                <p>元の設定ファイル(fn-6)のデフォルトサンプルレートを変更することで，サンプルレートを変更します．</p>
+                <div class="sourceCode" id="cb15"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ll /usr/share/pipewire/             </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span> 104</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>   7 root root  4096 Jul 15 02:34 ./</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span> 207 root root  4096 Jul 19 05:36 ../</span>
@@ -412,9 +424,9 @@ class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>   2 root root  4096 Jul 15 01:55 pipewire.conf.avail/</span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>   1 root root  6872 Jun 27 20:22 pipewire-pulse.conf</span>
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>   2 root root  4096 Jul 15 01:55 pipewire-pulse.conf.avail/</span></code></pre></div>
-<p><code>pipewire.conf</code>を<code>~/.config/pipewire/</code>へ，コピーして編集します．</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode conf"><code class="sourceCode toml"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dt">context.properties</span> <span class="op">=</span> <span class="op">{</span></span>
+                <p><code>pipewire.conf</code>を<code>~/.config/pipewire/</code>へ，コピーして編集します．</p>
+                <div class="sourceCode" id="cb16"><pre
+                class="sourceCode conf"><code class="sourceCode toml"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dt">context.properties</span> <span class="op">=</span> <span class="op">{</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">...</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">default.clock.rate</span><span class="op">          =</span> <span class="dv">96000</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">default.clock.allowed-rates</span><span class="op"> =</span> <span class="op">[</span> <span class="dv">44100</span> <span class="dv">48000</span> <span class="dv">88200</span> <span class="dv">96000</span> <span class="dv">196000</span> <span class="op">]</span></span>
@@ -423,17 +435,14 @@ class="sourceCode conf"><code class="sourceCode toml"><span id="cb16-1"><a href=
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">default.clock.max-quantum</span><span class="op">   =</span> <span class="dv">16384</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">...</span></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>quantumも上げて余裕を持たせます．</p>
-<p>//footnote[fn-5][https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Guide-Rates]
-//footnote[fn-6][https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire]</p>
-<h2 id="おわりに">おわりに</h2>
-<p>Windowsなら，アプリケーション音声(Beta)を選択すれば済むようなことも，かなり面倒な設定を書かなければ実現することはできません．しかし，この面倒さが，linuxを使用する面白さである，とも感じています．今後も，こういった内部処理の細かな変更を楽しんでいきたいと思います．</p>
-<p>ちなみに，私は(fn-0)のバージョンごとの設定の書き方，置く場所の違いに特に混乱しました．みなさんもお気をつけください．</p>
+                <p>quantumも上げて余裕を持たせます．</p>
+                <p>//footnote[fn-5][https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Guide-Rates]
+                //footnote[fn-6][https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire]</p>
+                <h2 id="おわりに">おわりに</h2>
+                <p>Windowsなら，アプリケーション音声(Beta)を選択すれば済むようなことも，かなり面倒な設定を書かなければ実現することはできません．しかし，この面倒さが，linuxを使用する面白さである，とも感じています．今後も，こういった内部処理の細かな変更を楽しんでいきたいと思います．</p>
+                <p>ちなみに，私は(fn-0)のバージョンごとの設定の書き方，置く場所の違いに特に混乱しました．みなさんもお気をつけください．</p>
       </article>
-      <section id="SideBar">
-                <img src="img/profile.jpg" alt="プロフィール画像" style="width: 100%; border-radius: 50%; margin-bottom: 1rem;" />
-                <h3>kinoko1943</h3>
-                <p>趣味で部屋にサーバーを飼っています。</p>
+      <section id="after">
                 
                 
                   
@@ -452,7 +461,7 @@ class="sourceCode conf"><code class="sourceCode toml"><span id="cb16-1"><a href=
               </section>
     </section>
     <footer>
-Copyright 2025 kinoko1943,  Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
+      Copyright 2025 kinoko1943, Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
     </footer>
 </body>
 </html>

@@ -3,3 +3,5 @@ description: Theme used in PureBuilder Simply 3.2.2's pbsimply-init.
 initial_control:
   build_cpr:
     - [css]
+    - [javascript]
+  

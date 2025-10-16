@@ -35,40 +35,41 @@ $endif$
 $for(header-includes)$
   $header-includes$
 $endfor$
-  <script src="javascript/sidebar-toggle.js" defer="defer"></script>
+  <script src="javascript/before-Toggle.js" defer="defer"></script>
 </head>
   <body>
     <header id="TopHeader">
     </header>
     <header id="TitleHeader">
       <h1 class="title">$title$</h1>
-$if(subtitle)$
+      $if(subtitle)$
       <p class="subtitle">$subtitle$</p>
-$endif$
+      $endif$
     </header>
-    <button id="menuToggle" class="menu-toggle">☰</button>
+    <button id="menu-Toggle" class="menu-Toggle"aria-controls="before" aria-expanded="false"> ☰</button>
     <section id="ContentContainer">
-$if(date)$
-      <p class="date">$date$</p>
-$endif$
-        <article id="MainArticle">
-$if(toc)$
-        <nav id="$idprefix$TOC" class="toc">
-$table-of-contents$
-        </nav>
-$endif$
-$body$
-      </article>
-      <section id="SideBar">
+      <div id="scrim" hidden></div>
+      <section id="before">
         $for(include-before)$
         $include-before$
         $endfor$
       </section>
+      <article id="MainArticle">
+        $if(toc)$
+        <nav id="$idprefix$TOC" class="toc">
+          $table-of-contents$
+        </nav>
+        $endif$
+        $body$
+      </article>
+      <section id="after">
+        $for(include-after)$
+        $include-after$
+        $endfor$
+      </section>
     </section>
     <footer>
-$for(include-after)$
-$include-after$
-$endfor$
+      Copyright 2025 kinoko1943, Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
     </footer>
 </body>
 </html>

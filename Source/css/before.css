@@ -1,0 +1,133 @@
+#before{
+    min-width: 0;
+}
+.before-card{
+    background:var(--bg-elev);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-1);
+    padding:clamp(12px,1.8vw,18px);
+    min-width:0;
+    max-width:160px;
+    overflow-wrap:anywhere;
+}
+.avatar {
+    line-height: 0;		/* remove line-height */ 
+    display: inline-block;	/* avatar wraps image */
+    margin: 5px;
+    border: 4px solid rgba(200,200,200,0.4);
+    border-radius: 50%;	/* relative value */
+    /*box-shadow: 0px 0px 5px rgba(0,0,0,0.4);*/
+    transition: linear 0.25s;
+    max-height: 160px;
+    max-width: 160px;
+}
+.avatar img {
+    border-radius: 50%;
+}
+.avatar:hover {
+    transition: ease-out 0.2s;
+    border: 4px solid rgba(0,0,0,0.2);
+    -webkit-transition: ease-out 0.2s;
+}
+
+/* ===== menu toggle button ===== */
+#menu-Toggle {
+    display: none;
+}
+
+@media (min-width:1025px){
+    #before{ transform:none; opacity:1; position:static; }
+    #scrim{ display:none; }
+}
+@media (max-width: 1024px) {
+    #menu-Toggle {
+        display: block;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--text);
+        border-radius: 12px;
+        padding: .75rem 1rem;
+        width: 40px;
+        text-align: left;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1200;
+        pointer-events:auto;
+    }
+
+    /* パネル：閉じているときは画面外にいる */
+    #before{
+        position: fixed;
+        inset: 0 auto 0 0;                 /* 左からスライドイン */
+        width: min(84vw, 320px);
+        max-width: 100%;
+        background: var(--bg-elev);
+        border-right: 1px solid var(--border);
+        box-shadow: 0 10px 30px rgba(0,0,0,.25);
+        transform: translateX(-100%);
+        opacity: 0;
+        transition: transform .25s ease, opacity .2s ease;
+        z-index: 1000;                      /* ← scrim より上に */
+        overflow: auto;
+        display: none;                      /* ← デフォは非表示 */
+    }
+  
+    /* 開いた状態（display と transform を**確実に**上書き） */
+    #before.open{
+        display: block !important;          /* ← 勝たせる */
+        transform: translateX(0);
+        opacity: 1;
+    }
+  
+    /* オーバーレイ（背景クリックで閉じる層） */
+    #scrim[aria-hidden="false"]{
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.35);
+        backdrop-filter: blur(1px);
+        z-index: 900;                        /* ← before より下 */
+    }
+  
+    /* 背景スクロール固定（任意） */
+    body.sidebar-open{ 
+        overflow: hidden; 
+    }
+}
+
+
+/* ============ Buttons ============ */
+/*
+.button, button, [type="button"], [type="submit"] {
+    appearance: none;
+    border: 1px solid color-mix(in oklab, var(--accent-400) 45%, var(--border));
+    background: linear-gradient(180deg,
+        color-mix(in oklab, var(--accent-400) 18%, var(--panel)),
+        color-mix(in oklab, var(--accent-600) 14%, var(--panel)));
+    color: var(--text);
+    padding: .65rem 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-1);
+}
+.button:hover, button:hover, [type="button"]:hover, [type="submit"]:hover {
+    filter: brightness(1.06);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent-400) 20%, transparent);
+}
+.button:focus-visible, button:focus-visible, [type="button"]:focus-visible, [type="submit"]:focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
+}
+*/
+/* ghost / subtle buttons */
+/*
+.button.ghost {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--text-dim);
+}
+.button.ghost:hover {
+    background: color-mix(in oklab, var(--panel) 90%, transparent);
+}
+*/
