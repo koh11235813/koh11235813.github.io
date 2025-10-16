@@ -331,3 +331,90 @@ img, video { max-width: 100%; height: auto; }
 .dark-only { display: initial; }
 html[data-theme="light"] .light-only { display: initial; }
 html[data-theme="light"] .dark-only { display: none; }
+
+/* ==== Qiita-like header ==== */
+.site-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  margin: 12px 0 0;
+}
+.site-brand { display: flex; align-items: center; gap: 12px; }
+.site-icon { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; }
+.site-name { font-size: var(--fs-2); font-weight: 700; }
+.site-search input {
+  width: clamp(180px, 28vw, 420px);
+  padding: .6rem .8rem;
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+/* ==== 3 columns layout ==== */
+#ContentContainer {
+  display: grid;
+  grid-template-columns: minmax(200px, 260px) 1fr minmax(220px, 280px);
+  gap: clamp(16px, 2.2vw, 28px);
+  align-items: start;
+  margin: clamp(12px, 2.5vw, 24px) auto;
+}
+#LeftBar {
+  background: color-mix(in oklab, var(--panel) 92%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(12px, 2vw, 18px);
+  box-shadow: var(--shadow-1);
+}
+@media (max-width: 1024px) {
+  #ContentContainer { grid-template-columns: 1fr; }
+  #LeftBar { order: 2; }
+  #SideBar { order: 3; }
+  #MainArticle { order: 1; }
+}
+
+/* ==== Posts ==== */
+#PostList { display: grid; gap: 14px; }
+.post-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-1);
+}
+.post-title { margin: 0 0 6px; font-size: clamp(18px, 2vw, 22px); }
+.post-meta { color: var(--muted); font-size: .95em; margin-bottom: 6px; }
+.post-excerpt { color: var(--text-dim); margin: .4rem 0 0; }
+
+/* Main 内の 2 カラム（左：カテゴリ / 右：記事） */
+#MainArticle .top-grid {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) 1fr;
+  gap: clamp(14px, 2vw, 24px);
+}
+#MainArticle .left-cat {
+  background: color-mix(in oklab, var(--panel) 92%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(12px, 2vw, 18px);
+  box-shadow: var(--shadow-1);
+}
+#MainArticle .cat-list { list-style: none; margin: 0; padding: 0; }
+#MainArticle .cat-list li { margin: 6px 0; }
+#MainArticle .post-column { min-width: 0; }
+#MainArticle #PostList { display: grid; gap: 14px; }
+#MainArticle .post-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-1);
+}
+#MainArticle .post-title { margin: 0 0 6px; font-size: clamp(18px, 2vw, 22px); }
+#MainArticle .post-meta { color: var(--muted); font-size: .95em; margin-bottom: 6px; }
+#MainArticle .post-excerpt { color: var(--text-dim); margin: .4rem 0 0; }
+
+@media (max-width: 900px) {
+  #MainArticle .top-grid { grid-template-columns: 1fr; }
+}

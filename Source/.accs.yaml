@@ -1,0 +1,51 @@
+<%#
+  ACCS Index Renderer (Qiita-ish)
+  - .indexes.rbm から記事一覧を取り、date/mtime の降順でカード表示
+  - 左カテゴリや検索は template.html 側で実装済み
+%>
+<% posts = [] %>
+<% begin
+     idx = Marshal.load(File.binread(".indexes.rbm"))
+     posts = idx.select { |it| it["path"].to_s.start_with?("articles/") }
+     posts = posts.sort_by { |it| it["date"] || it["mtime"] || 0 }.reverse
+   rescue
+     # フォールバック：articles 以下の md を mtime でソート
+     posts = Dir.glob("articles/**/*.{md,markdown}").map { |p| { "path"=>p, "title"=>File.basename(p), "mtime"=>File.mtime(p).to_i } }
+     posts.sort_by! { |it| it["mtime"] }.reverse
+   end %>
+
+<div id="PostList">
+  <% posts.each do |it| %>
+    <% href = it["path"].sub(/^Source\//, "").sub(/\.md$/,".html") %>
+    <% title = it["title"] || it["pagetitle"] || it["name"] || File.basename(href) %>
+    <% date  = it["date_str"] || it["date"] || Time.at(it["mtime"].to_i).strftime("%Y-%m-%d") rescue "" %>
+    <% tags  = Array(it["tags"] || it["categories"] || it["category"]).map(&:to_s) %>
+
+    <article class="post-card" data-title="<%= title.downcase %>" data-tags="<%= tags.join(' ').downcase %>">
+      <h2 class="post-title"><a href="<%= href %>"><%= title %></a></h2>
+      <% if date && date != "" %><div class="post-meta"><time><%= date %></time> <% if tags.any? %>・ <%= tags.map { |t| %Q(<span class="badge">#{t}</span>) }.join(" ") %><% end %></div><% end %>
+      <% if it["summary"] %><p class="post-excerpt"><%= it["summary"] %></p><% end %>
+    </article>
+  <% end %>
+</div>
+
+<script>
+  // Client-side filter for search & category
+  (function(){
+    const q = new URLSearchParams(location.search).get("cat");
+    const input = document.getElementById("searchInput");
+    function filter(){
+      const needle = (input?.value || "").trim().toLowerCase();
+      document.querySelectorAll(".post-card").forEach($c=>{
+        const t = $c.dataset.title || "";
+        const g = $c.dataset.tags || "";
+        const okText = !needle || t.includes(needle) || g.includes(needle);
+        const okCat  = !q || g.split(/\s+/).includes(q.toLowerCase());
+        $c.style.display = (okText && okCat) ? "" : "none";
+      });
+    }
+    input && input.addEventListener("input", filter);
+    filter();
+  })();
+</script>
+
