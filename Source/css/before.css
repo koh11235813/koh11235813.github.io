@@ -1,6 +1,6 @@
 #before{
     min-width: 0;
-    left: 48px;
+    padding-left: 48px;
 }
 .before-card{
     background:var(--bg-elev);

@@ -10,6 +10,12 @@
   --shadow-2: 0 10px 30px rgba(0,0,0,.12);
   --ring: 0 0 0 2px var(--color-accent-300), 0 0 0 6px color-mix(in oklab, var(--color-accent-300) 25%, transparent);
 
+  --header-offset: 0px;      /* ヘッダー追従時に動的に更新 */
+  --before-width: 320px;
+  --after-width: 320px;
+  --z-header: 1000;
+  --z-aside:  900;
+
   /* typography */
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Sans", "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   --fs-0: clamp(14px, .9vw, 16px);
@@ -249,14 +255,31 @@ html[data-theme="light"] .light-only { display: initial; }
 html[data-theme="light"] .dark-only { display: none; }
 
 /* ==== header ==== */
-.site-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
-  align-items: center;
-  margin: 12px 0 0;
-  z-index: 1200;
+
+
+/* ヘッダー：追従ON/OFF */
+body.header-sticky .site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  will-change: transform;
 }
+body.header-static .site-header {
+  position: relative; /* ふつうのフロー */
+}
+
+/* サイドパネル：常に追従（固定配置） */
+.before, .after {
+  position: fixed;
+  top: var(--header-offset); /* ヘッダーが追従ならその分だけ下げる */
+  bottom: 0;
+  overflow: auto;
+  z-index: var(--z-aside);
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+
 .site-brand { display: flex; align-items: center; gap: 12px; }
 .site-icon { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; }
 .site-name { font-size: var(--fs-2); font-weight: 700; }
