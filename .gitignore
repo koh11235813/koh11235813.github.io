@@ -3,3 +3,5 @@ GEMINI.md
 *.md
 .*.md
 .DS_Store
+*.html
+*.un~

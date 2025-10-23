@@ -166,7 +166,33 @@ img, video { max-width: 100%; height: auto; }
 #MainArticle p { color: var(--text); }
 #MainArticle p.lead { font-size: var(--fs-1); color: var(--text-dim); }
 
+/* インラインコード用 */
+#MainArticle code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Roboto Mono", "Noto Sans Mono", monospace;
+  background: color-mix(in oklab, var(--panel) 80%, #0000);
+  color: inherit;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .15em .45em;
+}
 
+/* コードブロックの箱 */
+#MainArticle pre {
+  background: color-mix(in oklab, var(--panel) 92%, #0000);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  overflow: auto;
+}
+
+/* pre 内の code は装飾をリセット（“二重”回避）*/
+#MainArticle pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit; /* フォント指定を継承に */
+}
 
 /* blockquotes */
 #MainArticle blockquote {
