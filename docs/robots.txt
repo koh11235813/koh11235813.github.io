@@ -2,4 +2,4 @@ User-agent: *
 
 Disallow: /norobots/
 
-Sitemap: http://localhost:8080/sitemap.xml
+Sitemap: https://koh11235813.github.io/sitemap.xml

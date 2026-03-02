@@ -8,38 +8,21 @@
 {%- endif -%}
 ';
 
-/* ============ Topbar Navigation ============ */
-#topbar-nav {
-  .topbar-nav-link {
-    color: var(--topbar-text-color);
-    text-decoration: none;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: background-color 0.15s ease;
-
-    &:hover {
-      background-color: color-mix(in srgb, var(--topbar-text-color) 12%, transparent);
-      text-decoration: none;
-    }
-
-    &.active {
-      color: var(--topbar-text-color);
-      font-weight: 700;
-    }
-
-    i { font-size: 1.1rem; }
-  }
-}
-
-/* Mode toggle in topbar (mirrors the one in sidebar) */
+/* ============ Mode toggle in topbar ============ */
 #mode-toggle-topbar {
   color: var(--topbar-text-color);
 }
 
-/* ============ Mobile Aside Toggle ============ */
-/* TOC panel: on xl+ it shows inline; on smaller screens, overlay when active */
+/* ============ TOC trigger — always show on mobile ============ */
+#toc-trigger {
+  display: none;
+
+  @media (max-width: 1199.98px) {
+    display: block;
+  }
+}
+
+/* ============ Mobile TOC Panel Overlay ============ */
 @media (max-width: 1199.98px) {
   #panel-wrapper {
     display: none;
@@ -74,9 +57,4 @@
   &.active {
     display: block;
   }
-}
-
-/* Sidebar profile trigger shows user icon on mobile */
-#sidebar.sidebar-open {
-  transform: translateX(0) !important;
 }

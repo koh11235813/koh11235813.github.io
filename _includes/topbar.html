@@ -5,10 +5,10 @@
     id="topbar"
     class="d-flex align-items-center justify-content-between px-3 px-lg-3 h-100"
   >
-    <!-- Left: TOC trigger (mobile) | breadcrumb (desktop) -->
+    <!-- Left: sidebar/profile trigger (mobile) -->
     <div class="d-flex align-items-center">
-      <button type="button" id="toc-trigger" class="btn btn-link d-xl-none me-1" aria-label="Table of Contents">
-        <i class="fas fa-list fa-fw"></i>
+      <button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Profile">
+        <i class="fas fa-user fa-fw"></i>
       </button>
 
       <nav id="breadcrumb" aria-label="Breadcrumb" class="d-none d-lg-flex">
@@ -45,36 +45,37 @@
       </nav>
     </div>
 
-    <!-- Center: Navigation links (always visible) -->
-    <nav id="topbar-nav" class="d-flex align-items-center gap-2" aria-label="Main Navigation">
-      <a href="{{ '/' | relative_url }}" class="topbar-nav-link{% if page.layout == 'home' %} active{% endif %}">
-        <i class="fas fa-home d-xl-none"></i>
-        <span class="d-none d-xl-inline">Home</span>
-      </a>
-      <a href="{{ '/articles/' | relative_url }}" class="topbar-nav-link{% if page.url contains '/articles' %} active{% endif %}">
-        <i class="fas fa-newspaper d-xl-none"></i>
-        <span class="d-none d-xl-inline">Articles</span>
-      </a>
-      <button type="button" id="search-trigger" class="btn btn-link topbar-nav-link p-0" aria-label="Search">
+    <!-- Center: title (mobile) / Navigation links -->
+    <div id="topbar-title">
+      {% if page.layout == 'home' %}
+        {{- site.data.locales[include.lang].title | default: site.title -}}
+      {% elsif page.collection == 'tabs' or page.layout == 'page' %}
+        {%- capture tab_key -%}{{ page.url | split: '/' }}{%- endcapture -%}
+        {{- site.data.locales[include.lang].tabs[tab_key] | default: page.title -}}
+      {% else %}
+        {{- site.data.locales[include.lang].layout[page.layout] | default: page.layout | capitalize -}}
+      {% endif %}
+    </div>
+
+    <!-- Right: search + mode toggle + TOC trigger -->
+    <div class="d-flex align-items-center gap-1">
+      <button type="button" id="search-trigger" class="btn btn-link" aria-label="Search">
         <i class="fas fa-search fa-fw"></i>
       </button>
-    </nav>
 
-    <!-- Right: mode toggle + sidebar/profile trigger -->
-    <div class="d-flex align-items-center gap-1">
       {% unless site.theme_mode %}
         <button type="button" class="btn btn-link" id="mode-toggle-topbar" aria-label="Switch Mode">
           <i class="fas fa-circle-half-stroke fa-fw"></i>
         </button>
       {% endunless %}
 
-      <button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Profile">
-        <i class="fas fa-user fa-fw"></i>
+      <button type="button" id="toc-trigger" class="btn btn-link d-xl-none" aria-label="Table of Contents">
+        <i class="fas fa-list fa-fw"></i>
       </button>
     </div>
   </div>
 
-  <!-- Search bar (handled by Chirpy JS) -->
+  <!-- Search bar (Chirpy JS expected structure) -->
   <search id="search" class="align-items-center ms-3 ms-lg-0">
     <i class="fas fa-search fa-fw"></i>
     <input
