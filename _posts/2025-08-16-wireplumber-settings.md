@@ -91,7 +91,7 @@ ALSA plug-in [osu!]:output_FR
 ```sh
 $ pw-top
 ```
-![実行結果image][pw-link.png]
+![実行結果image](/assets/img/pw-link.jpg)
 
 ### systemdによる実装
 前もって設定しておいた**アプリケーション名が含まれる音声ノード**を検知した際，自動で`pw-link`コマンドを打たせることで，仮想出力には設定されたアプリケーションからの音声だけを出力させます．

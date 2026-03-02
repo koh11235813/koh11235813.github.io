@@ -17,11 +17,11 @@ categories: [スマートシステム研究室]
 [SSL VPNサービス利用手順書](https://imc.tut.ac.jp/alt/public/Connect%20VPN/SSL-VPN%20manual%20win10.pdf)
 
 基本的に上記サイトの手順通りにすると、学内ネットワークにVPN接続できます。
-![接続前画面](img/setup_1.jpg)
+![接続前画面](/assets/img/setup_1.jpg)
 
-![設定画面](img/setup_2.jpg)
+![設定画面](/assets/img/setup_2.jpg)
 
-![接続完了](img/connected.jpg)
+![接続完了](/assets/img/connected.jpg)
 
 
 接続完了するとssh接続が可能になります。
