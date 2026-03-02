@@ -1,0 +1,119 @@
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://localhost:8080/</id>
+  <title>koh11235813</title>
+  <subtitle>koh11235813のホームページ</subtitle>
+  <updated>2026-03-03T02:32:00+09:00</updated>
+  <author>
+    <name>koh11235813</name>
+    <uri>http://localhost:8080/</uri>
+  </author>
+  <link rel="self" type="application/atom+xml" href="http://localhost:8080/feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="ja-JP"
+    href="http://localhost:8080/"/>
+  <generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator>
+  <rights> © 2026 koh11235813 </rights>
+  <icon>/assets/img/favicons/favicon.ico</icon>
+  <logo>/assets/img/favicons/favicon-96x96.png</logo>
+
+
+  
+  <entry>
+    <title>サーバーにVPNなどを利用して学外からアクセスする方法</title>
+    <link href="http://localhost:8080/posts/ssh_login_with_vpn/" rel="alternate" type="text/html" title="サーバーにVPNなどを利用して学外からアクセスする方法" />
+    <published>2025-10-20T00:00:00+09:00</published>
+  
+    <updated>2025-10-20T00:00:00+09:00</updated>
+  
+    <id>http://localhost:8080/posts/ssh_login_with_vpn/</id>
+    <content type="text/html" src="http://localhost:8080/posts/ssh_login_with_vpn/" />
+    <author>
+      <name>kinoko1943</name>
+    </author>
+
+  
+    
+    <category term="スマートシステム研究室" />
+    
+  
+
+  <summary>スマートシステム研究室のIPアドレスは情報メディア基盤センターから割り当てられているので学内ネットワークからであればアクセスできます IPアドレスは元のSlackメッセージを参照してください   手順1.VPNを利用してssh接続する  大学が提供しているサービスを利用する方法です  VPN接続サービス SSL VPNサービス利用手順書  基本的に上記サイトの手順通りにすると、学内ネットワークにVPN接続できます。       接続完了するとssh接続が可能になります。  ssh &amp;lt;ユーザー名&amp;gt;@133.15.X.X   ~/.ssh/configは  Host &amp;lt;好きな名前: Lab, Serverなど&amp;gt;     HostName 133.15.X.X     User &amp;lt;ユーザー名&amp;gt;     IdentityFile &amp;lt;秘密鍵へのパス&amp;g...</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Wireplumber下でオーディオルーティング</title>
+    <link href="http://localhost:8080/posts/wireplumber-settings/" rel="alternate" type="text/html" title="Wireplumber下でオーディオルーティング" />
+    <published>2025-08-17T00:00:00+09:00</published>
+  
+    <updated>2025-08-17T00:00:00+09:00</updated>
+  
+    <id>http://localhost:8080/posts/wireplumber-settings/</id>
+    <content type="text/html" src="http://localhost:8080/posts/wireplumber-settings/" />
+    <author>
+      <name>kinoko1943</name>
+    </author>
+
+  
+    
+    <category term="linux" />
+    
+  
+
+  <summary>コミックマーケットC106でとよぎぃそふとへ寄稿した記事です． 一部間違いがあり，頒布したものと変更点があります．   pipewire/wireplumberを使用したオーディオリンク はじめに はじめまして，B4のkinokoです．この記事ではlinuxディストリビューションでよく使用されるオーディオシステムであるwireplumber/pipewireの音声出力リンク構築方法について書きます．  本記事はオーディオ出力設定ファイルを変更するので，設定を間違えると途中で音が出力されなくなったり，音声入出力デバイスが消えたりします．自己責任で変更を行ってください．  動作環境    pipewire 1:1.4.x   wireplumber 0.5.x   基本的にディストリビューションの差はないと思います．検証環境にはArch Linuxを使用しました． wireplumber...</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>minecraftのサーバーの設定とか</title>
+    <link href="http://localhost:8080/posts/minecraftserver/" rel="alternate" type="text/html" title="minecraftのサーバーの設定とか" />
+    <published>2025-05-23T00:00:00+09:00</published>
+  
+    <updated>2025-05-23T00:00:00+09:00</updated>
+  
+    <id>http://localhost:8080/posts/minecraftserver/</id>
+    <content type="text/html" src="http://localhost:8080/posts/minecraftserver/" />
+    <author>
+      <name>kinoko1943</name>
+    </author>
+
+  
+    
+    <category term="server" />
+    
+  
+
+  <summary>minecraftの起動  systemdのデーモンとしてシステム起動時に自動起動するように設定している． # /etc/systemd/system/minecraft.service [Unit] Description=bootstrap service After=network-online.target  [Service] Type=forking User=kinoko WorkingDirectory=/home/kinoko/minecraft-server/mc1.20.1 TimeoutStopSec=120 ExecStart=/bin/sh /home/kinoko/minecraft-server/mc1.20.1/run.sh ExecStop=/bin/sh /home/kinoko/minecraft-server/mc1.20.1/stop_no...</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>pihole を RHEL9 へ移管したときのメモ</title>
+    <link href="http://localhost:8080/posts/pihole-to-rhel/" rel="alternate" type="text/html" title="pihole を RHEL9 へ移管したときのメモ" />
+    <published>2025-05-21T00:00:00+09:00</published>
+  
+    <updated>2025-05-21T00:00:00+09:00</updated>
+  
+    <id>http://localhost:8080/posts/pihole-to-rhel/</id>
+    <content type="text/html" src="http://localhost:8080/posts/pihole-to-rhel/" />
+    <author>
+      <name>kinoko1943</name>
+    </author>
+
+  
+    
+    <category term="server" />
+    
+  
+
+  <summary>pihole を RHEL9 へ移管したときのメモ  pihole のために開けておくポート                 port       protocol       service name       Notes                       53       udp,tcp       dns       DNSサーバーとして使用されるポート.                 67       udp       ipv4 dhcp       dhcpサーバーとして使用することを選択したとき，ipv4アドレスのために使用されるポート.                 80       tcp       http       すでに使用されている場合，8080ポートを代替として使用する.もしくはwebserver.portオプションで変更できる.   ...</summary>
+
+  </entry>
+
+</feed>
+
+

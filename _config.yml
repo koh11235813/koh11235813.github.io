@@ -1,0 +1,102 @@
+title: koh11235813
+tagline: Toyohashi University of Technology
+description: >-
+  koh11235813のホームページ
+
+url: "https://koh11235813.github.io"
+baseurl: ""
+
+lang: ja-JP
+timezone: Asia/Tokyo
+
+# Profile
+avatar: /assets/img/profile.jpg
+
+social:
+  name: koh11235813
+  links:
+    - https://github.com/koh11235813
+
+github:
+  username: koh11235813
+
+# Theme
+theme: jekyll-theme-chirpy
+# theme_mode: (leave blank to follow OS preference)
+
+# Output directory for GitHub Pages
+destination: docs
+
+# Pagination
+paginate: 10
+
+# Permalink
+permalink: /posts/:title/
+
+# Collections (required for Chirpy tabs)
+collections:
+  tabs:
+    output: true
+    sort_by: order
+
+# Plugins
+plugins:
+  - jekyll-archives
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-include-cache
+
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layouts:
+    category: category
+    tag: tag
+  permalinks:
+    tag: /tags/:name/
+    category: /categories/:name/
+
+# Markdown
+kramdown:
+  footnote_backlink: "&#8617;&#xfe0e;"
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+    block:
+      line_numbers: true
+      start_line: 1
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  profile: false
+  blanklines: false
+  ignore:
+    envs: [development]
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      toc: true
+      comments: false
+  - scope:
+      path: ""
+      type: tabs
+    values:
+      layout: page
+      permalink: /:title/
+
+exclude:
+  - "*.gem"
+  - "*.gemspec"
+  - README.md
+  - LICENSE
+  - vendor
+  - Source
+  - Build
+  - ".bundle"

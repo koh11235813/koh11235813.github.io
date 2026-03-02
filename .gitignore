@@ -1,5 +1,13 @@
 Claude.md
 GEMINI.md
-*.md
-.*.md
 .DS_Store
+
+# Jekyll
+.jekyll-cache/
+.jekyll-metadata
+.bundle/
+vendor/
+Gemfile.lock
+
+# Build artifacts (NOT docs/ - that's the GitHub Pages source)
+.sass-cache/
