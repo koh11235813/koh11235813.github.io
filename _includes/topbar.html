@@ -63,6 +63,22 @@
         <i class="fas fa-search fa-fw"></i>
       </button>
 
+      <!-- Search bar (Chirpy JS expected structure) -->
+      <search id="search" class="align-items-center ms-3 ms-lg-0">
+        <i class="fas fa-search fa-fw"></i>
+        <input
+          class="form-control"
+          id="search-input"
+          type="search"
+          aria-label="search"
+          autocomplete="off"
+          placeholder="{{ site.data.locales[include.lang].search.hint | capitalize }}..."
+        >
+      </search>
+      <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">
+        {{- site.data.locales[include.lang].search.cancel -}}
+      </button>
+
       {% unless site.theme_mode %}
         <button type="button" class="btn btn-link" id="mode-toggle-topbar" aria-label="Switch Mode">
           <i class="fas fa-circle-half-stroke fa-fw"></i>
@@ -74,20 +90,4 @@
       </button>
     </div>
   </div>
-
-  <!-- Search bar (Chirpy JS expected structure) -->
-  <search id="search" class="align-items-center ms-3 ms-lg-0">
-    <i class="fas fa-search fa-fw"></i>
-    <input
-      class="form-control"
-      id="search-input"
-      type="search"
-      aria-label="search"
-      autocomplete="off"
-      placeholder="{{ site.data.locales[include.lang].search.hint | capitalize }}..."
-    >
-  </search>
-  <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">
-    {{- site.data.locales[include.lang].search.cancel -}}
-  </button>
 </header>
