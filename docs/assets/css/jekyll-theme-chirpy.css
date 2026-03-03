@@ -3589,4 +3589,17 @@ header h1 + .post-meta {
   display: block;
 }
 
+/* ============ Prefer JP glyphs for body/headings ============ */
+body,
+header .post-desc,
+#toc-bar .label,
+#search-results a,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
 /*# sourceMappingURL=jekyll-theme-chirpy.css.map */
