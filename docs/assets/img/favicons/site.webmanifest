@@ -1,14 +1,12 @@
-
-
 {
   "name": "koh11235813",
   "short_name": "koh11235813",
-  "description": "koh11235813のホームページ",
   "icons": [
     {
       "src": "/assets/img/favicons/web-app-manifest-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/assets/img/favicons/web-app-manifest-512x512.png",
@@ -17,9 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "start_url": "/index.html",
-  "theme_color": "#2a1e6b",
-  "background_color": "#ffffff",
-  "display": "fullscreen"
+  "theme_color": "#f8f9fa",
+  "background_color": "#f8f9fa",
+  "display": "standalone"
 }
-
