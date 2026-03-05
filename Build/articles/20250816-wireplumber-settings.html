@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="generator" content="PureBuilder Simply" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="kinoko1943" />
+  <meta name="dcterms.date" content="2025-08-17" />
+  <title>Copyright 2025 kinoko1943, Powered by PureBuilder
+Simply – Wireplumber下でオーディオルーティング</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/before.css" />
+  <link rel="stylesheet" href="css/after.css" />
+<script src="javascript/before-Toggle.js" defer></script>
+<script src="javascript/sticky-header.js" defer></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+  <body>
+    <header id="TopHeader">
+    </header>
+    <header id="TitleHeader">
+      <h1 class="title">Wireplumber下でオーディオルーティング</h1>
+          </header>
+    <button id="menu-Toggle" class="menu-Toggle"aria-controls="before" aria-expanded="false"> ☰</button>
+    <section id="ContentContainer">
+      <div id="scrim" hidden></div>
+      <section id="before">
+                <img src="img/profile.jpg" img class="avatar" alt="プロフィール画像" />
+                <h3>kinoko1943</h3>
+                <p>Toyohashi University of Technology</p>
+                <div class="settings">
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" id="toggleStickyHeader">
+                    ヘッダーを追従させる
+                  </label>
+                </div>
+              </section>
+      <article id="MainArticle">
+                <blockquote>
+                <p>コミックマーケットC106でとよぎぃそふとへ寄稿した記事です．</p>
+                </blockquote>
+                <h1
+                id="pipewirewireplumberを使用したオーディオリンク">pipewire/wireplumberを使用したオーディオリンク</h1>
+                <h2 id="はじめに">はじめに</h2>
+                <p>はじめまして，B4のkinokoです．この記事ではlinuxディストリビューションでよく使用されるオーディオシステムであるwireplumber/pipewireの音声出力リンク構築方法について書きます．</p>
+                <p>本記事はオーディオ出力設定ファイルを変更するので，設定を間違えると途中で音が出力されなくなったり，音声入出力デバイスが消えたりします．自己責任で変更を行ってください．</p>
+                <h2 id="動作環境">動作環境</h2>
+                <ul>
+                <li>pipewire 1:1.4.x</li>
+                <li>wireplumber 0.5.x</li>
+                </ul>
+                <p>基本的にディストリビューションの差はないと思います．検証環境にはArch
+                Linuxを使用しました．
+                wireplumberの設定ファイルの書き方が 0.4.xと
+                0.5.xでは異なります(fn-0)．</p>
+                <h2 id="動機">動機</h2>
+                <p>linuxでobsを利用した画面録画をする際にデフォルトだと，出力を全てキャプチャしてしまう(デフォルト出力sinkしか存在しない)ため個別に専用の仮想出力を作成して録画を見返したときに邪魔な音が入らないようにしたかったからです．</p>
+                <h2 id="実装">実装</h2>
+                <p>今回はsystemdのtimerをトリガーとした方式とwireplumberのLua
+                APIを使用した方式で実装します．</p>
+                <p>両方の方式でpipewireの仮想出力を設定する必要があります．</p>
+                <p>デフォルトの出力で出力を行っても問題はありませんが，単純に出力音量が2倍になりますし，肝心の<strong>個別に出力させたいという目的</strong>が達成できないため，仮想出力を新規で作成することをおすすめします．</p>
+                <p>仮想出力はpipewireの設定ファイル，
+                <code>~/.config/pipewire/pipewire.conf.d/</code>に書き込んだあと，再起動を行うことで，設定が読み込まれます．
+                また，ログアウト&amp;ログイン
+                もしくは，<code>systemctl --user restart wireplumber</code>でも読み込まれます．
+                <code>10-null-sink.conf</code>は，gitlabのpipewireの設定例(fn-1)そのままです．</p>
+                <div class="sourceCode" id="cb1"><pre
+                class="sourceCode conf"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">context.objects</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">{   </span><span class="dt">factory</span><span class="op"> =</span> <span class="dt">adapter</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">args</span><span class="op"> =</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">            </span><span class="dt">factory.name</span><span class="op">     =</span> <span class="dt">support.null-audio-sink</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">            </span><span class="dt">node.name</span><span class="op">        =</span> <span class="st">&quot;my-sink&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">            </span><span class="dt">media.class</span><span class="op">      =</span> <span class="dt">Audio</span><span class="op">/</span><span class="dt">Sink</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">            </span><span class="dt">audio.position</span><span class="op">   =</span> <span class="op">[</span> <span class="er">FL</span> <span class="er">FR</span> <span class="op">]</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">            </span><span class="dt">monitor.channel-volumes</span><span class="op"> =</span> <span class="cn">true</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="op">            </span><span class="dt">monitor.passthrough</span><span class="op"> =</span> <span class="cn">true</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="op">            </span><span class="dt">adapter.auto-port-config</span><span class="op"> =</span> <span class="op">{</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="op">                </span><span class="dt">mode</span><span class="op"> =</span> <span class="dt">dsp</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">                </span><span class="dt">monitor</span><span class="op"> =</span> <span class="cn">true</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">                </span><span class="dt">position</span><span class="op"> =</span> <span class="dt">preserve</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="op">            }</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="op">        }</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="op">    }</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div>
+                <p>//footnote[fn-0][https://pipewire.pages.freedesktop.org/wireplumber/daemon/configuration/migration.html#config-migration]
+                //footnote[fn-1][https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Virtual-Devices#single-nodes]</p>
+                <h3 id="リンクの確認方法">リンクの確認方法</h3>
+                <p>各ノードのリンクがどのようになっているかを知るためには，<code>pw-link -l</code>または<code>pw-top</code>を使用します．</p>
+                <div class="sourceCode" id="cb2"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pw-link <span class="at">-l</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">my-sink:playback_FL</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="op">&lt;</span>- <span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FL</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">my-sink:playback_FR</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="op">&lt;</span>- <span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FR</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">upmix-5.1-sink:playback_FL</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="op">&lt;</span>- <span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FL</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">upmix-5.1-sink:playback_FR</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="op">&lt;</span>- <span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FR</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">my-sink-2:playback_FL</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="op">&lt;</span>- <span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FL</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ex">my-sink-2:playback_FR</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="op">&lt;</span>- <span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FR</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ex">alsa_output.usb-Yamaha_Corporation_Yamaha_AG03MK2-00.analog-stereo:playback_FL</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="op">&lt;</span>- <span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FL</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="ex">alsa_output.usb-Yamaha_Corporation_Yamaha_AG03MK2-00.analog-stereo:playback_FR</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="op">&lt;</span>- <span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FR</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FL</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> alsa_output.usb-Yamaha_Corporation_Yamaha_AG03MK2-00.analog-stereo:playback_FL</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> my-sink:playback_FL</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> upmix-5.1-sink:playback_FL</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> my-sink-2:playback_FL</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="ex">ALSA</span> plug-in <span class="pp">[</span><span class="ss">osu!</span><span class="pp">]</span>:output_FR</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> alsa_output.usb-Yamaha_Corporation_Yamaha_AG03MK2-00.analog-stereo:playback_FR</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> my-sink:playback_FR</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> upmix-5.1-sink:playback_FR</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span><span class="ex">-</span><span class="op">&gt;</span> my-sink-2:playback_FR</span></code></pre></div>
+                <div class="sourceCode" id="cb3"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pw-top</span></code></pre></div>
+                <p>//image[pw-link][実行結果][width=140mm]</p>
+                <h3 id="systemdによる実装">systemdによる実装</h3>
+                <p>前もって設定しておいた<strong>アプリケーション名が含まれる音声ノード</strong>を検知した際，自動で<code>pw-link</code>コマンドを打たせることで，仮想出力には設定されたアプリケーションからの音声だけを出力させます．</p>
+                <p>わからない場合は<code>top</code>などを使って探してください．</p>
+                <h4 id="スクリプトの作成">スクリプトの作成</h4>
+                <p>監視をするスクリプトと<code>pw-link</code>を実行するスクリプトを分けて作成します．少なくとも，これらは分けずとも動作することを確認しています．</p>
+                <pre><code>#!/bin/bash
+
+# アプリケーション名
+APP_NAME=&quot;&quot;
+
+# リンク先の出力ノード名（物理デバイスまたは仮想デバイス）
+TARGET_NODE=&quot;my-sink&quot;
+
+# ノード情報を検索
+while :; do
+    NODE_ID=$(pw-cli list-objects | grep &quot;node.name&quot; | grep &quot;$APP_NAME&quot; | awk &#39;{print$3}&#39; | sed &#39;s/&quot;//g&#39;)
+    if [[ -n &quot;$NODE_ID&quot; ]]; then
+        echo &quot;Audio node found: $NODE_ID&quot;
+        break
+    fi
+    sleep 1
+done
+
+# pw-link でリンクを作成
+echo &quot;Linking node $NODE_ID to $TARGET_NODE...&quot;
+pw-link &quot;$NODE_ID&quot; &quot;$TARGET_NODE&quot;
+
+# debug output
+echo pw-link &quot;$NODE_ID&quot; &quot;$TARGET_NODE&quot; </code></pre>
+                <p><code>link-audio</code>内で，<code>pw-cli list-objects | grep ...</code>としている部分は，一度ターミナル上でも実行してみることをおすすめします．実行した結果が，目的のオーディオノード名になっていることを確認してください．</p>
+                <p>その後，スクリプトに実行許可を与えます．</p>
+                <div class="sourceCode" id="cb5"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> chmod 755 <span class="va">$HOME</span>/.config/systemd/user/watch-proc.sh</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> chmod 755 <span class="va">$HOME</span>/.config/systemd/user/link-audio.sh</span></code></pre></div>
+                <h4 id="systemd-ユニットファイルの作成">systemd
+                ユニットファイルの作成</h4>
+                <p>ユニットファイルを作成します．今回は，GUIターゲットのため，基本的に，ユーザー権限で動作させたほうが良いでしょう．</p>
+                <pre><code>[Unit]
+Description=Watch process and start pwlink
+After=network.target pipewire.service pipewire-pulse.service
+
+[Service]
+ExecStart=%h/.config/systemd/user/scripts/watch-proc.sh
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target</code></pre>
+                <p>ユニットファイルの作成後，以下のようにコマンドを打って，サービスを有効化・起動します．</p>
+                <div class="sourceCode" id="cb7"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> systemctl <span class="at">--user</span> daemon-reload</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> systemctl <span class="at">--user</span> enable <span class="at">--now</span> watch-proc.service</span></code></pre></div>
+                <p>何かエラーが出ている場合は，<code>journalctl</code>や<code>systemctl --user status</code>などを見て確認してください．</p>
+                <h3
+                id="wireplumberのluaスクリプトで実装する">wireplumberのLuaスクリプトで実装する</h3>
+                <p>wireplumberは0.5.xから設定の書き方が変更され，ユーザー設定の場所も変更されました(fn-2)．設定ファイルは，<code>~/.config/wireplumber/wireplumber.conf.d</code>，スクリプトは，<code>~/.local/share/wireplumber/scripts</code>に配置します(fn-3)．</p>
+                <p>まずはスクリプトを読みこませる設定ファイルを作成します(fn-4)．</p>
+                <div class="sourceCode" id="cb8"><pre
+                class="sourceCode conf"><code class="sourceCode toml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">wireplumber.components</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">name</span><span class="op"> =</span> <span class="st">&quot;90-hello-world.lua&quot;</span><span class="op">, </span><span class="dt">type</span><span class="op"> =</span> <span class="dt">script</span><span class="op">/</span><span class="dt">lua</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">provides</span><span class="op"> =</span> <span class="dt">hello-world</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">    }</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">name</span><span class="op"> =</span> <span class="st">&quot;51-example.lua&quot;</span><span class="op">, </span><span class="dt">type</span><span class="op"> =</span> <span class="dt">script</span><span class="op">/</span><span class="dt">lua</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">provides</span><span class="op"> =</span> <span class="dt">custom-policy</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="op">    }</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="dt">wireplumber.profiles</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">main</span><span class="op"> =</span> <span class="op">{</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">hello-world</span><span class="op"> =</span> <span class="dt">required</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="op">        </span><span class="dt">custom-policy</span><span class="op"> =</span> <span class="dt">required</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="op">    }</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+                <p>スクリプトを作成します．今回は，例として，Firefoxをmy-sinkにリンクさせています．</p>
+                <pre><code>SimpleEventHook {
+    name = &quot;linking/auto-link-hook&quot;,
+    interests = {
+        EventInterest {
+        Constraint { &quot;event.type&quot;, &quot;=&quot;, &quot;session-item-added&quot; },
+        Constraint { &quot;event.session-item.interface&quot;, &quot;=&quot;, &quot;linkable&quot; },
+        },
+    },
+    execute = function(event)
+        local si = event:get_subject()
+        local source = event:get_source()
+        local om = source:call(&quot;get-object-manager&quot;, &quot;session-item&quot;)
+        local si_props = si.properties
+
+        -- ターゲットノードにマッチするかチェック
+        if si_props[&quot;node.name&quot;] == &quot;Firefox&quot; then
+        -- リンク作成を少しだけ遅延させる (レースコンディション回避)
+        Core.timeout_add(1000, function()
+            -- ターゲットノードを検索
+            local target_node = om:lookup {
+                type = &quot;SiLinkable&quot;,
+                Constraint { &quot;node.name&quot;, &quot;equals&quot;, &quot;my-sink&quot; },
+            }
+
+            if not target_node then
+                print(&quot;One or more target sinks not found. Cannot link.&quot;)
+                return
+            end
+            
+            -- リンク作成のヘルパー関数
+            local function create_and_activate_link(source_si, target_si, link_name, passthrough_enabled)
+                local new_link = SessionItem(&quot;si-standard-link&quot;)
+                if new_link:configure({
+                    [&quot;out.item&quot;] = source_si,
+                    [&quot;in.item&quot;] = target_si,
+                    [&quot;passthrough&quot;] = passthrough_enabled,
+                    [&quot;out.item.port.context&quot;] = &quot;output&quot;,
+                    [&quot;in.item.port.context&quot;] = &quot;input&quot;,
+                    [&quot;link.name&quot;] = link_name,
+                }) then
+                    new_link:register()
+                    new_link:activate(Feature.SessionItem.ACTIVE)
+                    print(&quot;Successfully created and activated link &quot; .. tostring(link_name) .. &quot;!&quot;)
+                else
+                    print(&quot;Failed to configure link to &quot; .. tostring(link_name) .. &quot;.&quot;)
+                end
+            end
+
+            -- リンクを作成:  -&gt; my-sink
+            create_and_activate_link(si, target_node, &quot;my-sink&quot;, false)
+            
+        end) -- Core.timeout_addの終わり
+        end
+    end
+}:register()</code></pre>
+                <p>このスクリプトは，オーディオセッションが追加されるたびに呼び出され，<code>if si_props["node.name"] == "Firefox" then</code>で目的のノードが存在するセッションかどうかを判定します．次に，仮想出力が存在するかを確認した後，<code>create_and_activate_link</code>関数でノード同士をリンクさせています．</p>
+                <p>すべて終わったら，再起動を行うことで，設定が読み込まれます．
+                こちらも，ログアウト&amp;ログイン
+                もしくは，<code>systemctl --user restart wireplumber</code>でも読み込まれます．</p>
+                <p>//footnote[fn-2][https://pipewire.pages.freedesktop.org/wireplumber/daemon/configuration/migration.html]
+                //footnote[fn-3][https://pipewire.pages.freedesktop.org/wireplumber/daemon/locations.html]
+                //footnote[fn-4][https://pipewire.pages.freedesktop.org/wireplumber/scripting/custom_scripts.html]</p>
+                <h3 id="その他設定小技">その他，設定・小技</h3>
+                <h4
+                id="wireplumberで普段使用しない出力を消す">wireplumberで普段使用しない出力を消す</h4>
+                <p>普段使用しない音声出力(物理)は，もしその出力が選択されてしまった場合に，混乱の原因になるため，デフォルトで出力の存在を消します．</p>
+                <p>まずは消したい出力の名前を調べます．</p>
+                <div class="sourceCode" id="cb10"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wpctl status</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">PipeWire</span> <span class="st">&#39;pipewire-0&#39;</span> [1.4.6, kinoko@archlinux, cookie:3553775109]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">└─</span> Clients:</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="ex">38.</span> xdg-desktop-portal-hyprland         [1.4.6, kinoko@archlinux, pid:1679]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="ex">62.</span> pipewire                            [1.4.6, kinoko@archlinux, pid:1825]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="ex">69.</span> WirePlumber                         [1.4.6, kinoko@archlinux, pid:1777145]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="ex">80.</span> WirePlumber <span class="pp">[</span><span class="ss">export</span><span class="pp">]</span>                [1.4.6, kinoko@archlinux, pid:1777145]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="ex">83.</span> Chromium input                      [1.4.6, kinoko@archlinux, pid:2313]</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="ex">84.</span> WEBRTC VoiceEngine                  [1.4.6, kinoko@archlinux, pid:2202]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        <span class="ex">85.</span> WEBRTC VoiceEngine                  [1.4.6, kinoko@archlinux, pid:2202]</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="ex">86.</span> Steam Voice Settings                [1.4.6, kinoko@archlinux, pid:2052]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="ex">87.</span> Chromium input                      [1.4.6, kinoko@archlinux, pid:2588]</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="ex">89.</span> Firefox                             [1.4.6, kinoko@archlinux, pid:23232]</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="ex">91.</span> Firefox                             [1.4.6, kinoko@archlinux, pid:23232]</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="ex">94.</span> Steam                               [1.4.6, kinoko@archlinux, pid:2052]</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>       <span class="ex">106.</span> wpctl                               [1.4.6, kinoko@archlinux, pid:1777470]</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="ex">Audio</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Devices:</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      65. HDA ATI HDMI                        <span class="pp">[</span><span class="ss">alsa</span><span class="pp">]</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      88. Built-in Audio                      <span class="pp">[</span><span class="ss">alsa</span><span class="pp">]</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      92. Yamaha AG03MK2                      <span class="pp">[</span><span class="ss">alsa</span><span class="pp">]</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  </span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Sinks:</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      31. <span class="er">(</span><span class="ex">null</span><span class="kw">)</span>                              <span class="ex">[vol:</span> 1.00]</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      33. <span class="er">(</span><span class="ex">null</span><span class="kw">)</span>                              <span class="ex">[vol:</span> 1.00]</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      35. <span class="er">(</span><span class="ex">null</span><span class="kw">)</span>                              <span class="ex">[vol:</span> 1.00]</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      43. HDA ATI HDMI Digital Stereo <span class="er">(</span><span class="ex">HDMI</span> 2<span class="kw">)</span> <span class="ex">[vol:</span> 0.40]</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      66. Built-in Audio Digital Stereo <span class="er">(</span><span class="ex">IEC958</span><span class="kw">)</span> <span class="ex">[vol:</span> 0.40]</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  <span class="pp">*</span>   68. Yamaha AG03MK2 Analog Stereo        [vol: 1.00]</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  </span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Sources:</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      70. Built-in Audio Analog Stereo        [vol: 1.00]</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  <span class="pp">*</span>  114. Yamaha AG03MK2 Analog Stereo        [vol: 1.00]</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  </span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Filters:</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  </span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a> <span class="ex">└─</span> Streams:</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="ex">Video</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Devices:</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  </span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Sinks:</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  </span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Sources:</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  </span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Filters:</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  </span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a> <span class="ex">└─</span> Streams:</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a><span class="ex">Settings</span></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a> <span class="ex">└─</span> Default Configured Devices:</span></code></pre></div>
+                <p>上記の出力結果から，消したい出力(43)について調べます．</p>
+                <div class="sourceCode" id="cb11"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wpctl inspect 43</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">id</span> 43, type PipeWire:Interface:Node</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.card</span> = <span class="st">&quot;1&quot;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.card_name</span> = <span class="st">&quot;HDA ATI HDMI&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.class</span> = <span class="st">&quot;generic&quot;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.components</span> = <span class="st">&quot;HDA:1002aa01,00aa0100,00100a00&quot;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.device</span> = <span class="st">&quot;7&quot;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.driver_name</span> = <span class="st">&quot;snd_hda_intel&quot;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.id</span> = <span class="st">&quot;HDMI 1&quot;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.long_card_name</span> = <span class="st">&quot;HDA ATI HDMI at 0x84aa0000 irq 232&quot;</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.mixer_name</span> = <span class="st">&quot;ATI R6xx HDMI&quot;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.name</span> = <span class="st">&quot;ZOWIE XL LCD&quot;</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.resolution_bits</span> = <span class="st">&quot;16&quot;</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.subclass</span> = <span class="st">&quot;generic-mix&quot;</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.subdevice</span> = <span class="st">&quot;0&quot;</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.subdevice_name</span> = <span class="st">&quot;subdevice #0&quot;</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="ex">alsa.sync.id</span> = <span class="st">&quot;00000000:00000000:00000000:00000000&quot;</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="ex">api.alsa.card.longname</span> = <span class="st">&quot;HDA ATI HDMI at 0x84aa0000 irq 232&quot;</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="ex">api.alsa.card.name</span> = <span class="st">&quot;HDA ATI HDMI&quot;</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="ex">api.alsa.path</span> = <span class="st">&quot;hdmi:1,1&quot;</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="ex">api.alsa.pcm.card</span> = <span class="st">&quot;1&quot;</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">api.alsa.pcm.stream</span> = <span class="st">&quot;playback&quot;</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="ex">audio.channels</span> = <span class="st">&quot;2&quot;</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="ex">audio.position</span> = <span class="st">&quot;FL,FR&quot;</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="ex">card.profile.device</span> = <span class="st">&quot;7&quot;</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> client.id = <span class="st">&quot;80&quot;</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="ex">clock.quantum-limit</span> = <span class="st">&quot;8192&quot;</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="ex">device.api</span> = <span class="st">&quot;alsa&quot;</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="ex">device.class</span> = <span class="st">&quot;sound&quot;</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="ex">device.icon-name</span> = <span class="st">&quot;audio-card-analog&quot;</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> device.id = <span class="st">&quot;65&quot;</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="ex">device.profile.description</span> = <span class="st">&quot;Digital Stereo (HDMI 2)&quot;</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    <span class="ex">device.profile.name</span> = <span class="st">&quot;hdmi-stereo-extra1&quot;</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    <span class="ex">device.routes</span> = <span class="st">&quot;1&quot;</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> factory.id = <span class="st">&quot;19&quot;</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    <span class="ex">factory.name</span> = <span class="st">&quot;api.alsa.pcm.sink&quot;</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    <span class="ex">iec958.codecs</span> = <span class="st">&quot;[&quot;</span>PCM<span class="st">&quot;]&quot;</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    <span class="ex">library.name</span> = <span class="st">&quot;audioconvert/libspa-audioconvert&quot;</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> media.class = <span class="st">&quot;Audio/Sink&quot;</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> node.description = <span class="st">&quot;HDA ATI HDMI Digital Stereo (HDMI 2)&quot;</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>    <span class="ex">node.driver</span> = <span class="st">&quot;true&quot;</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    <span class="ex">node.loop.name</span> = <span class="st">&quot;data-loop.0&quot;</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> node.name = <span class="st">&quot;alsa_output.pci-0000_03_00.1.hdmi-stereo-extra1&quot;</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> node.nick = <span class="st">&quot;ZOWIE XL LCD&quot;</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>    <span class="ex">node.pause-on-idle</span> = <span class="st">&quot;false&quot;</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> object.path = <span class="st">&quot;alsa:acp:HDMI:7:playback&quot;</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> object.serial = <span class="st">&quot;91632&quot;</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>    <span class="ex">port.group</span> = <span class="st">&quot;playback&quot;</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> priority.driver = <span class="st">&quot;632&quot;</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>  <span class="ex">*</span> priority.session = <span class="st">&quot;632&quot;</span></span></code></pre></div>
+                <p>この中の，<code>node.name</code>の<code>alsa_output.pci-0000_03_00.1</code>がこのデバイス名です．これを消す設定を書きます．</p>
+                <pre><code>monitor.alsa.rules = [
+  {
+    matches = [
+      {
+        device.name = &quot;alsa_card.pci-0000_03_00.1&quot;
+      }
+    ]
+    actions = {
+      update-props = {
+        device.disabled = true
+      }
+    }
+  }
+]</code></pre>
+                <p>この設定で，出力を消すことができます．</p>
+                <div class="sourceCode" id="cb13"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wpctl status</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Audio</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Devices:</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      66. Yamaha AG03MK2                      <span class="pp">[</span><span class="ss">alsa</span><span class="pp">]</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      93. Built-in Audio                      <span class="pp">[</span><span class="ss">alsa</span><span class="pp">]</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Sinks:</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      31. <span class="er">(</span><span class="ex">null</span><span class="kw">)</span>                              <span class="ex">[vol:</span> 1.00]</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      33. <span class="er">(</span><span class="ex">null</span><span class="kw">)</span>                              <span class="ex">[vol:</span> 1.00]</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      35. <span class="er">(</span><span class="ex">null</span><span class="kw">)</span>                              <span class="ex">[vol:</span> 1.00]</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  <span class="pp">*</span>   40. Yamaha AG03MK2 Analog Stereo        [vol: 1.00]</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>      67. Built-in Audio Digital Stereo <span class="er">(</span><span class="ex">IEC958</span><span class="kw">)</span> <span class="ex">[vol:</span> 0.40]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  </span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a> <span class="ex">├─</span> Sources:</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>  <span class="pp">*</span>   63. Yamaha AG03MK2 Analog Stereo        [vol: 1.00]</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a> <span class="ex">│</span>     111. Built-in Audio Analog Stereo        [vol: 1.00]</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a> <span class="ex">...</span></span></code></pre></div>
+                <h4
+                id="pipewireのサンプルレートを上げる">pipewireのサンプルレートを上げる</h4>
+                <p><code>~/.config/pipewire/pipewire.conf.d/10-rate.conf</code>のような設定を作成します(fn-5)．</p>
+                <pre><code># Adds more common rates
+context.properties = {
+    default.clock.allowed-rates = [ 44100 48000 88200 96000 192000 ]
+}</code></pre>
+                <p>元の設定ファイル(fn-6)のデフォルトサンプルレートを変更することで，サンプルレートを変更します．</p>
+                <div class="sourceCode" id="cb15"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ll /usr/share/pipewire/             </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span> 104</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>   7 root root  4096 Jul 15 02:34 ./</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span> 207 root root  4096 Jul 19 05:36 ../</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>   1 root root  4538 Jun 27 20:22 client.conf</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>   2 root root  4096 Jul 15 01:55 client.conf.avail/</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>   2 root root  4096 Jul 15 02:22 filter-chain/</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>   1 root root  1925 Jun 27 20:22 filter-chain.conf</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>   1 root root  4505 Jun 27 20:22 jack.conf</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>   2 root root  4096 Jul 15 02:34 media-session.d/</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>   1 root root 16879 Jun 27 20:22 minimal.conf</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>   1 root root  5973 Jun 27 20:22 pipewire-aes67.conf</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>   1 root root  2163 Jun 27 20:22 pipewire-avb.conf</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>   1 root root 14192 Jun 27 20:22 pipewire.conf</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>   2 root root  4096 Jul 15 01:55 pipewire.conf.avail/</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>   1 root root  6872 Jun 27 20:22 pipewire-pulse.conf</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>   2 root root  4096 Jul 15 01:55 pipewire-pulse.conf.avail/</span></code></pre></div>
+                <p><code>pipewire.conf</code>を<code>~/.config/pipewire/</code>へ，コピーして編集します．</p>
+                <div class="sourceCode" id="cb16"><pre
+                class="sourceCode conf"><code class="sourceCode toml"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dt">context.properties</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">...</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">default.clock.rate</span><span class="op">          =</span> <span class="dv">96000</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">default.clock.allowed-rates</span><span class="op"> =</span> <span class="op">[</span> <span class="dv">44100</span> <span class="dv">48000</span> <span class="dv">88200</span> <span class="dv">96000</span> <span class="dv">196000</span> <span class="op">]</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">default.clock.quantum</span><span class="op">       =</span> <span class="dv">2048</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">default.clock.min-quantum</span><span class="op">   =</span> <span class="dv">64</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">default.clock.max-quantum</span><span class="op">   =</span> <span class="dv">16384</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="op">    </span><span class="dt">...</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+                <p>quantumも上げて余裕を持たせます．</p>
+                <p>//footnote[fn-5][https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Guide-Rates]
+                //footnote[fn-6][https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire]</p>
+                <h2 id="おわりに">おわりに</h2>
+                <p>Windowsなら，アプリケーション音声(Beta)を選択すれば済むようなことも，かなり面倒な設定を書かなければ実現することはできません．しかし，この面倒さが，linuxを使用する面白さである，とも感じています．今後も，こういった内部処理の細かな変更を楽しんでいきたいと思います．</p>
+                <p>ちなみに，私は(fn-0)のバージョンごとの設定の書き方，置く場所の違いに特に混乱しました．みなさんもお気をつけください．</p>
+      </article>
+      <section id="after">
+                
+                
+                  
+                  
+                  
+                  <nav id="NavigationColumn">
+                    <ul>
+                      
+                        <li><a href="/">Top</a></li>
+                      
+                        <li><a href="/articles/">Articles</a></li>
+                      
+                    </ul>
+                  </nav>
+                
+              </section>
+    </section>
+    <footer>
+      Copyright 2025 kinoko1943, Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
+    </footer>
+</body>
+</html>

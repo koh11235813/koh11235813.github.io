@@ -22,7 +22,8 @@ github:
 
 # Theme
 theme: jekyll-theme-chirpy
-# theme_mode: (leave blank to follow OS preference)
+theme_mode: dark
+toc: true
 
 # Output directory for GitHub Pages
 destination: docs

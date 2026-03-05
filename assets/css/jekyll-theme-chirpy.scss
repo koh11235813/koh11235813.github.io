@@ -59,6 +59,82 @@
   }
 }
 
+/* ============ Panel scroll container ============ */
+#panel-scroll-container {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+/* toc-wrapper の個別 sticky/scroll をコンテナに委ねる */
+#toc-wrapper {
+  position: relative;
+  max-height: none;
+  overflow-y: visible;
+}
+
+/* toc-wrapper の上下グラデーションマスクは不要 */
+#toc-wrapper::before,
+#toc-wrapper::after {
+  display: none;
+}
+
+.toc-border-cover {
+  display: none;
+}
+
+/* .access の個別 sticky も解除 */
+#panel-scroll-container .access {
+  position: static;
+}
+
+/* モバイル：panel-wrapper 自体が fixed+scroll なのでコンテナは static に */
+@media (max-width: 1199.98px) {
+  #panel-scroll-container {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+/* ============ Post table (chienomi-style article list) ============ */
+.post-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: center;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--main-border-color);
+    color: var(--heading-color);
+    font-weight: 600;
+  }
+
+  td {
+    padding: 0.5rem 1rem;
+    color: var(--post-list-text-color);
+  }
+
+  tbody tr:nth-child(odd) {
+    background: var(--tb-odd-bg);
+  }
+
+  tbody tr:nth-child(even) {
+    background: var(--tb-even-bg);
+  }
+
+  a {
+    color: var(--link-color);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 /* ============ Prefer JP glyphs for body/headings ============ */
 body,
 header .post-desc,

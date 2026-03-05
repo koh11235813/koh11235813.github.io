@@ -14,7 +14,7 @@
 
 
 <!-- `site.alt_lang` can specify a language different from the UI -->
-<html lang="ja-JP" >
+<html lang="ja-JP" data-mode="dark">
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
@@ -97,6 +97,8 @@
 
   <!-- 3rd-party Dependencies -->
 
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.36.4/dist/tocbot.min.css">
   
 
   
@@ -243,14 +245,6 @@
 
   <div class="sidebar-bottom d-flex flex-wrap align-items-center w-100">
     
-      <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle">
-        <i class="fas fa-circle-half-stroke"></i>
-      </button>
-
-      
-        <span class="icon-border"></span>
-      
-    
 
     
       <a
@@ -331,10 +325,6 @@
       </search>
       <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">キャンセル</button>
 
-      
-        <button type="button" class="btn btn-link" id="mode-toggle-topbar" aria-label="Switch Mode">
-          <i class="fas fa-circle-half-stroke fa-fw"></i>
-        </button>
       
 
       <button type="button" id="toc-trigger" class="btn btn-link d-xl-none" aria-label="Table of Contents">
@@ -708,8 +698,21 @@ screen -S minecraft -U -d -m java -Xms12G -Xmx12G @libraries/net/minecraftforge/
 
           <!-- panel -->
           <aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted">
-            <div class="access">
-              <!-- Get 5 last posted/updated posts -->
+            <div id="panel-scroll-container">
+              
+                
+                
+
+
+
+
+
+
+
+              
+
+              <div class="access">
+                <!-- Get 5 last posted/updated posts -->
 
 
 
@@ -727,6 +730,13 @@ screen -S minecraft -U -d -m java -Xms12G -Xmx12G @libraries/net/minecraftforge/
   <section id="access-lastmod">
     <h2 class="panel-heading">最近更新された投稿</h2>
     <ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2">
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/how-to-use-git/">gitの使い方とか</a>
+        </li>
       
         
         
@@ -761,7 +771,7 @@ screen -S minecraft -U -d -m java -Xms12G -Xmx12G @libraries/net/minecraftforge/
   <!-- #access-lastmod -->
 
 
-              <!-- The trending tags list -->
+                <!-- The trending tags list -->
 
 
 
@@ -780,19 +790,8 @@ screen -S minecraft -U -d -m java -Xms12G -Xmx12G @libraries/net/minecraftforge/
 
 
 
+              </div>
             </div>
-
-            
-              
-              
-
-
-
-
-
-
-
-            
           </aside>
         </div>
 

@@ -4,7 +4,7 @@
   <id>https://koh11235813.github.io/</id>
   <title>koh11235813</title>
   <subtitle>koh11235813のホームページ</subtitle>
-  <updated>2026-03-03T13:56:21+09:00</updated>
+  <updated>2026-03-06T05:23:05+09:00</updated>
   <author>
     <name>koh11235813</name>
     <uri>https://koh11235813.github.io/</uri>
@@ -17,6 +17,34 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>gitの使い方とか</title>
+    <link href="https://koh11235813.github.io/posts/how-to-use-git/" rel="alternate" type="text/html" title="gitの使い方とか" />
+    <published>2026-03-06T00:00:00+09:00</published>
+  
+    <updated>2026-03-06T00:00:00+09:00</updated>
+  
+    <id>https://koh11235813.github.io/posts/how-to-use-git/</id>
+    <content type="text/html" src="https://koh11235813.github.io/posts/how-to-use-git/" />
+    <author>
+      <name>koh11235813</name>
+    </author>
+
+  
+    
+    <category term="linux" />
+    
+    <category term="git" />
+    
+    <category term="shell" />
+    
+  
+
+  <summary>まずgitとは？     Git（ギット2345）は、プログラムのソースコードなどの変更履歴を記録・追跡するための分散型バージョン管理システムである。Linuxカーネルのソースコード管理に用いるためにリーナス・トーバルズによって開発され、それ以降ほかの多くのプロジェクトで採用されている。Linuxカーネルのような巨大プロジェクトにも対応できるように、動作速度に重点が置かれている。現在のメンテナは濱野純 (英語: Junio C Hamano) で、2005年7月から担当している。    Gitでは、各ユーザのワーキングディレクトリに、全履歴を含んだリポジトリの完全な複製が作られる。したがって、ネットワークにアクセスできないなどの理由で中心リポジトリにアクセスできない環境でも、履歴の調査や変更の記録といったほとんどの作業を行うことができる。これが「分散型」と呼ばれる理由である。    ...</summary>
+
+  </entry>
 
   
   <entry>

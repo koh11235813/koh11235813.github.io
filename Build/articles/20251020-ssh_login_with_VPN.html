@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="generator" content="PureBuilder Simply" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="kinoko1943" />
+  <meta name="dcterms.date" content="2025-10-20" />
+  <title>Copyright 2025 kinoko1943, Powered by PureBuilder
+Simply – サーバーにVPNなどを利用して学外からアクセスする方法</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/before.css" />
+  <link rel="stylesheet" href="css/after.css" />
+<script src="javascript/before-Toggle.js" defer></script>
+<script src="javascript/sticky-header.js" defer></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+  <body>
+    <header id="TopHeader">
+    </header>
+    <header id="TitleHeader">
+      <h1 class="title">サーバーにVPNなどを利用して学外からアクセスする方法</h1>
+          </header>
+    <button id="menu-Toggle" class="menu-Toggle"aria-controls="before" aria-expanded="false"> ☰</button>
+    <section id="ContentContainer">
+      <div id="scrim" hidden></div>
+      <section id="before">
+                <img src="img/profile.jpg" img class="avatar" alt="プロフィール画像" />
+                <h3>kinoko1943</h3>
+                <p>Toyohashi University of Technology</p>
+                <div class="settings">
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" id="toggleStickyHeader">
+                    ヘッダーを追従させる
+                  </label>
+                </div>
+              </section>
+      <article id="MainArticle">
+                <blockquote>
+                <p>スマートシステム研究室のIPアドレスは情報メディア基盤センターから割り当てられているので学内ネットワークからであればアクセスできます<br />
+                IPアドレスは元のSlackメッセージを参照してください</p>
+                </blockquote>
+                <h2
+                id="手順1.vpnを利用してssh接続する">手順1.VPNを利用してssh接続する</h2>
+                <p>大学が提供しているサービスを利用する方法です</p>
+                <p><a
+                href="https://imc.tut.ac.jp/network/vpn.html">VPN接続サービス</a>
+                <a
+                href="https://imc.tut.ac.jp/alt/public/Connect%20VPN/SSL-VPN%20manual%20win10.pdf">SSL
+                VPNサービス利用手順書</a></p>
+                <p>基本的に上記サイトの手順通りにすると、学内ネットワークにVPN接続できます。
+                <img src="img/setup_1.jpg" alt="接続前画面" /></p>
+                <figure>
+                <img src="img/setup_2.jpg" alt="設定画面" />
+                <figcaption aria-hidden="true">設定画面</figcaption>
+                </figure>
+                <figure>
+                <img src="img/connected.jpg" alt="接続完了" />
+                <figcaption aria-hidden="true">接続完了</figcaption>
+                </figure>
+                <p>接続完了するとssh接続が可能になります。</p>
+                <div class="sourceCode" id="cb1"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="op">&lt;</span>ユーザー名<span class="op">&gt;</span>@133.15.X.X</span></code></pre></div>
+                <p><code>~/.ssh/config</code>は</p>
+                <pre class="config"><code>Host &lt;好きな名前: Lab, Serverなど&gt;
+    HostName 133.15.X.X
+    User &lt;ユーザー名&gt;
+    IdentityFile &lt;秘密鍵へのパス&gt;
+    TCPKeepAlive yes</code></pre>
+                <h3
+                id="forticlient-vpn-を利用できない接続できない">FortiClient
+                VPN を利用できない/接続できない</h3>
+                <p><a
+                href="https://github.com/adrienverge/openfortivpn">openfortivpn</a>を使用しましょう。
+                特に、Debian,RHEL系ではないLinuxディストリビューションでは、FortiClientVPNが使いにくい、動作しないことがあるようです。</p>
+                <p>インストール手順は<a
+                href="https://github.com/adrienverge/openfortivpn?tab=readme-ov-file#installing">GitHubのInstalling</a>を参考にしてください</p>
+                <div class="sourceCode" id="cb3"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mac/homebrew</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install openfortivpn</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Mac/MacPorts</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> port install openfortivpn</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Arch Linux</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> pacman <span class="at">-S</span> openfortivpn</span></code></pre></div>
+                <p>linuxでは依存関係としてpppかpppdが必要です。<code>lsmod | grep ppp</code>などで、pppがロードされていることを確認してください。</p>
+                <h4
+                id="openfortivpnの最小実行例">openfortivpnの最小実行例</h4>
+                <div class="sourceCode" id="cb4"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> openfortivpn gw.vpn.tut.ac.jp:443 <span class="at">-u</span> <span class="op">&lt;</span>imcのユーザー名<span class="op">&gt;</span> -p <span class="op">&lt;</span>imcのパスワード<span class="op">&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 必要に応じて /etc/openfortivpn/config に host, port, username, password, trusted-cert を保存</span></span></code></pre></div>
+                <h2
+                id="手順2.大学のサーバーからproxy-jumpする">手順2.大学のサーバーからProxy
+                Jumpする</h2>
+                <blockquote>
+                <p><strong>設定をするときのみ、VPN接続か、学内ネットワークからの操作が必要</strong>なので、先に手順1をやってみてできそうならこれも進めてください。
+                主に自宅デスクトップPCなどからアクセスしたいときに操作が楽になります。</p>
+                </blockquote>
+                <p>参考にしたサイト <a
+                href="https://note.com/ddlia/n/n162ab277d132">3系
+                (主にB1) 向けお役立ち情報</a></p>
+                <h3 id="ssh接続">ssh接続</h3>
+                <p>DDliaさんのようにvscodeからでも、ターミナルのvim,nano,emacs、フォルダーからメモ帳など、なんでもいいので、<code>~/.ssh/config</code>に追記します。</p>
+                <p>Hostには自分の好きな名前、HostNameには接続先である<code>xdev.edu.tut.ac.jp</code>、Userには情報メディア基盤センターから通知されている「アルファベット1文字
+                + 学籍番号」を入力します。</p>
+                <pre class="config"><code>Host tutimc 
+    HostName xdev.edu.tut.ac.jp
+    User r2218XX</code></pre>
+                <p>保存してssh接続確認します。</p>
+                <div class="sourceCode" id="cb6"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> tutimc</span></code></pre></div>
+                <p><code>Enter password for r2218XX@xdev.edu.tut.ac.jp</code>と言われるので、情報メディア基盤センターのパスワードを入力して接続します。</p>
+                <p>接続できるとプロンプトが以下のようになります。</p>
+                <div class="sourceCode" id="cb7"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[r2218XX@xdev05]~%</span> </span></code></pre></div>
+                <p>このまま公開鍵認証の設定もします。</p>
+                <h3 id="公開鍵と秘密鍵の生成">公開鍵と秘密鍵の生成</h3>
+                <p>ターミナル画面を新しく開いて新しく公開鍵、秘密鍵を生成します。鍵ペアは<code>~/.ssh/</code>に生成されます。</p>
+                <div class="sourceCode" id="cb8"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/.ssh</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-t</span> ed25519</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Generating</span> public/private ed25519 key pair.</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Enter</span> file in which to save the key <span class="er">(</span><span class="ex">/home/</span><span class="op">&lt;</span>User_Name<span class="op">&gt;</span>/.ssh/id_ed25519<span class="kw">)</span><span class="bu">:</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Enter</span> passphrase <span class="er">(</span><span class="ex">empty</span> for no passphrase<span class="kw">)</span><span class="bu">:</span> </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Enter</span> same passphrase again: </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Your</span> identification has been saved in /home/<span class="op">&lt;</span>User_Name<span class="op">&gt;</span>/.ssh/id_ed25519</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Your</span> public key has been saved in /home/<span class="op">&lt;</span>User_Name<span class="op">&gt;</span>/.ssh/id_ed25519.pub</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> key fingerprint is:</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ex">SHA256:prxxSgkz+jUcAWEIn7ohbYOuyn9WUmcsu1hgza5fXwM</span> <span class="op">&lt;</span>User_Name<span class="op">&gt;</span>@<span class="op">&lt;</span>PC_Name<span class="op">&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> key<span class="st">&#39;s randomart image is:</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="st">+--[ED25519 256]--+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="st">|.. .+.           |</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="st">| ..o .           |</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="st">|  o   + .        |</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="st">| +   o * +       |</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="st">|= + = = S  E     |</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="st">|o+ o B X    .    |</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="st">|...   / o.   o   |</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="st">|o  . B B. . . .  |</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="st">|+...+ +.   .     |</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="st">+----[SHA256]-----+</span></span></code></pre></div>
+                <p><code>~/.ssh/</code>に秘密鍵<code>id_ed25519</code>と公開鍵`<code>id_ed25519.pub</code>が生成されました。
+                鍵の名前を変更した場合は、適宜読み替えてください(id_tutimcなど)</p>
+                <h3 id="公開鍵の配置">公開鍵の配置</h3>
+                <p>生成された公開鍵を確認します。</p>
+                <div class="sourceCode" id="cb9"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> id_ed25519.pub</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Mac/Linux</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> id_ed25519.pub</span></code></pre></div>
+                <p>コピーしておいてもいいですし、scpでファイルを送信してもいいです。</p>
+                <div class="sourceCode" id="cb10"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> ~/.ssh/id_ed25519.pub tutimc:~/.ssh/</span></code></pre></div>
+                <p>Mac/Linuxで、<code>ssh-copy-id</code>を使用できるなら、書き込みは不要です。</p>
+                <div class="sourceCode" id="cb11"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ssh-copy-id</span> <span class="at">-i</span> ~/.ssh/id_ed25519.pub tutimc</span></code></pre></div>
+                <p>公開鍵はtutimcの<code>~/.ssh/authorized_keys</code>に書き込みます。書き込む手段はなんでもいいです。</p>
+                <p>-#
+                ファイルを上記の手段で送信していた場合は<code>cat</code>して書き込むと楽</p>
+                <div class="sourceCode" id="cb12"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># コピペする場合</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> ~/.ssh/authorized_keys  <span class="co">#vim</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> ~/.ssh/authorized_keys  <span class="co">#nano</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;&lt;ここにコピペ&gt;&quot;</span> <span class="op">&gt;&gt;</span> ~/.ssh/authorized_keys</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># catする場合</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.ssh/id_ed25519.pub <span class="op">&gt;&gt;</span> ~/.ssh/authorized_keys</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.ssh/id_ed25519.pub <span class="kw">|</span> <span class="fu">tee</span> <span class="at">-a</span> ~/.ssh/authorized_keys <span class="co">#出力も見たいとき</span></span></code></pre></div>
+                <p>パーミッション(権限)の設定をします。
+                <code>ls -la</code>を実行したときに、<code>authorized_keys</code>
+                が <code>-rw-------</code>になるようにします。
+                また、<code>~/.ssh/</code>も
+                <code>-rwx------</code>にします。</p>
+                <div class="sourceCode" id="cb13"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 600 ~/.ssh/authorized_keys</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 700 ~/.ssh/</span></code></pre></div>
+                <h3
+                id="自分の.sshconfigに秘密鍵の場所を追記">自分の<code>~/.ssh/config</code>に秘密鍵の場所を追記</h3>
+                <p>このままではsshするときに毎回パスワードを聞かれるので、秘密鍵の場所を追記します。</p>
+                <pre class="config"><code>Host tutimc 
+    HostName xdev.edu.tut.ac.jp
+    User r2218XX
+    IdentityFile ~/.ssh/id_ed25519</code></pre>
+                <p>これで、パスワード無しでログインできるはずです。</p>
+                <div class="sourceCode" id="cb15"><pre
+                class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> tutimc</span></code></pre></div>
+                <h3 id="proxyjump">ProxyJump</h3>
+                <p>tutimcのssh接続設定が完了したので、ProxyJumpは<code>~/.ssh/config</code>に一行追加するだけです。</p>
+                <pre class="config"><code>Host &lt;好きな名前: Lab, Serverなど&gt;
+    HostName 133.15.X.X
+    User &lt;ユーザー名&gt;
+    IdentityFile &lt;秘密鍵へのパス&gt;
+    TCPKeepAlive yes
+    ProxyJump tutimc # &lt;-ここの名前は設定した大学のサーバーのHostの名前にする</code></pre>
+                <p>これで、VPN接続することなく研究室のサーバーに接続できます。</p>
+      </article>
+      <section id="after">
+                
+                
+                  
+                  
+                  
+                  <nav id="NavigationColumn">
+                    <ul>
+                      
+                        <li><a href="/">Top</a></li>
+                      
+                        <li><a href="/articles/">Articles</a></li>
+                      
+                    </ul>
+                  </nav>
+                
+              </section>
+    </section>
+    <footer>
+      Copyright 2025 kinoko1943, Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
+    </footer>
+</body>
+</html>

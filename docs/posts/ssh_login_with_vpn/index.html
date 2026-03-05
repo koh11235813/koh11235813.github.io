@@ -14,7 +14,7 @@
 
 
 <!-- `site.alt_lang` can specify a language different from the UI -->
-<html lang="ja-JP" >
+<html lang="ja-JP" data-mode="dark">
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
@@ -97,6 +97,8 @@
 
   <!-- 3rd-party Dependencies -->
 
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.36.4/dist/tocbot.min.css">
   
 
   
@@ -250,14 +252,6 @@
 
   <div class="sidebar-bottom d-flex flex-wrap align-items-center w-100">
     
-      <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle">
-        <i class="fas fa-circle-half-stroke"></i>
-      </button>
-
-      
-        <span class="icon-border"></span>
-      
-    
 
     
       <a
@@ -338,10 +332,6 @@
       </search>
       <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">キャンセル</button>
 
-      
-        <button type="button" class="btn btn-link" id="mode-toggle-topbar" aria-label="Switch Mode">
-          <i class="fas fa-circle-half-stroke fa-fw"></i>
-        </button>
       
 
       <button type="button" id="toc-trigger" class="btn btn-link d-xl-none" aria-label="Table of Contents">
@@ -762,7 +752,7 @@
 
 
 
-<article class="px-1" data-toc="false">
+<article class="px-1" data-toc="true">
   <header>
     <h1 data-toc-skip>サーバーにVPNなどを利用して学外からアクセスする方法</h1>
     
@@ -848,6 +838,28 @@
     </div>
   </header>
 
+  
+    <div id="toc-bar" class="d-flex align-items-center justify-content-between invisible">
+      <span class="label text-truncate">サーバーにVPNなどを利用して学外からアクセスする方法</span>
+      <button type="button" class="toc-trigger btn me-1">
+        <i class="fa-solid fa-list-ul fa-fw"></i>
+      </button>
+    </div>
+
+    <button id="toc-solo-trigger" type="button" class="toc-trigger btn btn-outline-secondary btn-sm">
+      <span class="label ps-2 pe-1">コンテンツ</span>
+      <i class="fa-solid fa-angle-right fa-fw"></i>
+    </button>
+
+    <dialog id="toc-popup" class="p-0">
+      <div class="header d-flex flex-row align-items-center justify-content-between">
+        <div class="label text-truncate py-2 ms-4">サーバーにVPNなどを利用して学外からアクセスする方法</div>
+        <button id="toc-popup-close" type="button" class="btn mx-1 my-1 opacity-75">
+          <i class="fas fa-close"></i>
+        </button>
+      </div>
+      <div id="toc-popup-content" class="px-4 py-3 pb-4"></div>
+    </dialog>
   
 
   <div class="content">
@@ -1226,8 +1238,27 @@ nano ~/.ssh/authorized_keys  <span class="c">#nano</span>
 
           <!-- panel -->
           <aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted">
-            <div class="access">
-              <!-- Get 5 last posted/updated posts -->
+            <div id="panel-scroll-container">
+              
+                
+                
+
+
+
+
+
+
+  <div class="toc-border-cover z-3"></div>
+  <section id="toc-wrapper" class="invisible position-sticky ps-0 pe-4 pb-4">
+    <h2 class="panel-heading ps-3 pb-2 mb-0">コンテンツ</h2>
+    <nav id="toc"></nav>
+  </section>
+
+
+              
+
+              <div class="access">
+                <!-- Get 5 last posted/updated posts -->
 
 
 
@@ -1245,6 +1276,13 @@ nano ~/.ssh/authorized_keys  <span class="c">#nano</span>
   <section id="access-lastmod">
     <h2 class="panel-heading">最近更新された投稿</h2>
     <ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2">
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/how-to-use-git/">gitの使い方とか</a>
+        </li>
       
         
         
@@ -1279,7 +1317,7 @@ nano ~/.ssh/authorized_keys  <span class="c">#nano</span>
   <!-- #access-lastmod -->
 
 
-              <!-- The trending tags list -->
+                <!-- The trending tags list -->
 
 
 
@@ -1298,19 +1336,8 @@ nano ~/.ssh/authorized_keys  <span class="c">#nano</span>
 
 
 
+              </div>
             </div>
-
-            
-              
-              
-
-
-
-
-
-
-
-            
           </aside>
         </div>
 
@@ -1377,9 +1404,13 @@ nano ~/.ssh/authorized_keys  <span class="c">#nano</span>
   
 
   
-    <div class="btn btn-outline-primary disabled" aria-label="次">
-      <p>-</p>
-    </div>
+    <a
+      href="/posts/how-to-use-git/"
+      class="btn btn-outline-primary"
+      aria-label="次"
+    >
+      <p>gitの使い方とか</p>
+    </a>
   
 </nav>
 
