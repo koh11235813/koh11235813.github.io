@@ -1,0 +1,28 @@
+---
+layout: default
+---
+
+{% include lang.html %}
+
+{% assign posts = site.posts | where_exp: 'item', 'item.hidden != true' %}
+
+<div id="post-list" class="flex-grow-1 px-xl-1">
+  <table class="post-table">
+    <thead>
+      <tr>
+        <th>Article Title</th>
+        <th>Category</th>
+        <th>Wrote on</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+        <tr>
+          <td><a href="{{ post.url | relative_url }}">{{ post.title }}</a></td>
+          <td>{{ post.categories | join: ' ::' }}</td>
+          <td>{{ post.date | date: "%Y-%m-%d" }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

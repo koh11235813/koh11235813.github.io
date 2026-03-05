@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="generator" content="PureBuilder Simply" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="kinoko1943" />
+  <meta name="dcterms.date" content="2025-05-21" />
+  <title>Copyright 2025 kinoko1943, Powered by PureBuilder
+Simply – pihole を RHEL9 へ移管したときのメモ</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/before.css" />
+  <link rel="stylesheet" href="css/after.css" />
+<script src="javascript/before-Toggle.js" defer></script>
+<script src="javascript/sticky-header.js" defer></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+  <body>
+    <header id="TopHeader">
+    </header>
+    <header id="TitleHeader">
+      <h1 class="title">pihole を RHEL9 へ移管したときのメモ</h1>
+          </header>
+    <button id="menu-Toggle" class="menu-Toggle"aria-controls="before" aria-expanded="false"> ☰</button>
+    <section id="ContentContainer">
+      <div id="scrim" hidden></div>
+      <section id="before">
+                <img src="img/profile.jpg" img class="avatar" alt="プロフィール画像" />
+                <h3>kinoko1943</h3>
+                <p>Toyohashi University of Technology</p>
+                <div class="settings">
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" id="toggleStickyHeader">
+                    ヘッダーを追従させる
+                  </label>
+                </div>
+              </section>
+      <article id="MainArticle">
+                <h1 id="pihole-を-rhel9-へ移管したときのメモ">pihole を
+                RHEL9 へ移管したときのメモ</h1>
+                <h2 id="pihole-のために開けておくポート"><a
+                href="https://docs.pi-hole.net/main/prerequisites/#ports">pihole
+                のために開けておくポート</a></h2>
+                <table>
+                <colgroup>
+                <col style="width: 25%" />
+                <col style="width: 25%" />
+                <col style="width: 25%" />
+                <col style="width: 25%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th>port</th>
+                <th>protocol</th>
+                <th>service name</th>
+                <th>Notes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td>53</td>
+                <td>udp,tcp</td>
+                <td>dns</td>
+                <td>DNSサーバーとして使用されるポート.</td>
+                </tr>
+                <tr>
+                <td>67</td>
+                <td>udp</td>
+                <td>ipv4 dhcp</td>
+                <td>dhcpサーバーとして使用することを選択したとき，ipv4アドレスのために使用されるポート.</td>
+                </tr>
+                <tr>
+                <td>80</td>
+                <td>tcp</td>
+                <td>http</td>
+                <td>すでに使用されている場合，8080ポートを代替として使用する.もしくはwebserver.portオプションで変更できる.</td>
+                </tr>
+                <tr>
+                <td>123</td>
+                <td>udp</td>
+                <td>NTP</td>
+                <td>ntpサーバーとして使用することを選択したときに使用するポート.</td>
+                </tr>
+                <tr>
+                <td>443</td>
+                <td>tcp</td>
+                <td>https</td>
+                <td>すでに使用されている場合，8443ポートを代替として使用する.もしくはwebserver.portオプションで変更できる.</td>
+                </tr>
+                <tr>
+                <td>547</td>
+                <td>udp</td>
+                <td>ipv6 dhcp</td>
+                <td>dhcpサーバーとして使用することを選択したとき，ipv6アドレスのために使用されるポート.</td>
+                </tr>
+                </tbody>
+                </table>
+                <p>最低限開けないといけないのは53, 80, 443ポート．</p>
+                <p>これらを開けておかないとpiholeのwebページ(?)にアクセスできない．</p>
+                <pre><code>sudo firewall-cmd --add-port=53/tcp --permanent
+sudo firewall-cmd --add-port=80/tcp --permanent
+sudo firewall-cmd --add-port=443/tcp --permanent</code></pre>
+                <p>再読込 <code>sudo firewall-cmd --reload</code> 確認
+                <code>sudo firewall-cmd --list-ports</code></p>
+                <p>設定できていれば以下のような表示を確認できるはずです．</p>
+                <pre><code>ports: 53/tcp 53/udp 80/tcp 443/tcp</code></pre>
+                <h2 id="selinuxの無効化またはpermissiveモードに変更"><a
+                href="https://docs.redhat.com/ja/documentation/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/sect-security-enhanced_linux-working_with_selinux-changing_selinux_modes">SELinuxの無効化またはPermissiveモードに変更</a></h2>
+                <p>piholeはインストールするときにSELinuxかどうかをチェックし，SELinuxが<code>Enforcing</code>である場合はインストールが途中で止まる．</p>
+                <pre><code>sudo vim /etc/selinux/config
+# もしくは
+sudo nano /etc/selinux/config</code></pre>
+                <pre><code># This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#       enforcing - SELinux security policy is enforced.
+#       permissive - SELinux prints warnings instead of enforcing.
+#       disabled - No SELinux policy is loaded.
+SELINUX=permissive
+# SELINUXTYPE= can take one of these two values:
+#       targeted - Targeted processes are protected,
+#       mls - Multi Level Security protection.
+SELINUXTYPE=targeted</code></pre>
+                <p><code>SELINUX</code>を<code>permissive</code>または<code>disabled</code>に設定する</p>
+                <h2 id="piholeのインストール">piholeのインストール<a
+                href="https://discourse.pi-hole.net/t/unsupported-os-cant-skip-os-check/35686">*</a></h2>
+                <div class="sourceCode" id="cb5"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-sSL</span> https://install.pi-hole.net <span class="kw">|</span> <span class="bu">export</span> <span class="va">PIHOLE_SKIP_OS_CHECK</span><span class="op">=</span>true <span class="va">sudo</span> <span class="va">bash</span></span></code></pre></div>
+                <p>上記を実行するだけ．
+                何かエラーが出たらメッセージをググるなりすると解決策が見つかると思います．</p>
+                <p>インストールが最後までできたらログインするパスワード<pwd>を変えます．</p>
+                <p>piholeはデフォルトで/usr/local/bin/に配置される．sudoするときはPATHが通っていないことが多いのでフルパスでコマンドを入れるか、自分で設定する必要がある．</p>
+                <pre><code>sudo /usr/local/bin/pihole setpassword &lt;pwd&gt;</code></pre>
+                <p>ここまでできたらwebブラウザからpiholeを入れたサーバーのipアドレス:443/adminでwebページが見えると思う．</p>
+                <p><code>&lt;ip address&gt;:443/admin</code>
+                自分がやったときは80番(HTTP)ではssl証明書がないなどと言われてアクセスできなかったので443番(HTTPS)でログインした．</p>
+                <h3 id="adblock-list-をリロードする">adblock list
+                をリロードする</h3>
+                <p>このままでもいいが，adblock
+                listのリロードにはCLIを叩く必要がある．</p>
+                <pre><code>sudo /usr/local/bin/pihole -g</code></pre>
+                <p>めんどくさいので<code>crontab</code>に入れる</p>
+                <pre><code>$ sudo su
+root # crontab -e</code></pre>
+                <pre class="crotab"><code>0 1 * * * /usr/local/bin/pihole -g</code></pre>
+                <p>毎日午前1時に更新</p>
+                <pre><code>root # exit
+$</code></pre>
+                <p>rootの<code>crontab</code>に入れることでsudoしないといけないのを回避．</p>
+                <h2 id="おまけ">おまけ</h2>
+                <h3 id="piholeのポート変更">piholeのポート変更</h3>
+                <p>piholeの設定ファイルは<code>/etc/pihole/pihole.toml</code>にある．</p>
+                <pre><code>$ cat /etc/pihole/pihole.toml |grep &#39;port =&#39;
+  port = 53
+  DBimport = true
+  port = &quot;80o,443os,[::]:80o,[::]:443os&quot;
+$ </code></pre>
+                <p>このポート<code>port = "80o,443os,[::]:80o,[::]:443os"</code>を変更することで(特にウェブページのポートを変更したい場合)開放するポートを変更できる．
+                設定が終わったらpiholeを再起動する．</p>
+                <pre><code>sudo service pihole-FTL restart
+# もしくは
+sudo systemctl restart pihole-FTL.service</code></pre>
+                <h3 id="adblock-するリストを追加する">adblock
+                するリストを追加する</h3>
+                <p>適当に検索すると色々出てくるが，とりあえずここだけ追加すればいい</p>
+                <p><a
+                href="https://warui.intaa.net/adhosts/">悪いインターネット</a></p>
+      </article>
+      <section id="after">
+                
+                
+                  
+                  
+                  
+                  <nav id="NavigationColumn">
+                    <ul>
+                      
+                        <li><a href="/">Top</a></li>
+                      
+                        <li><a href="/articles/">Articles</a></li>
+                      
+                    </ul>
+                  </nav>
+                
+              </section>
+    </section>
+    <footer>
+      Copyright 2025 kinoko1943, Powered by <a href="https://purebuilder.app/">PureBuilder Simply</a>
+    </footer>
+</body>
+</html>

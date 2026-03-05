@@ -1,17 +1,17 @@
 
 
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <id>https://koh11235813.github.io/</id>
+  <id>http://localhost:4000/</id>
   <title>koh11235813</title>
   <subtitle>koh11235813のホームページ</subtitle>
-  <updated>2026-03-03T13:56:21+09:00</updated>
+  <updated>2026-03-06T02:43:52+09:00</updated>
   <author>
     <name>koh11235813</name>
-    <uri>https://koh11235813.github.io/</uri>
+    <uri>http://localhost:4000/</uri>
   </author>
-  <link rel="self" type="application/atom+xml" href="https://koh11235813.github.io/feed.xml"/>
+  <link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml"/>
   <link rel="alternate" type="text/html" hreflang="ja-JP"
-    href="https://koh11235813.github.io/"/>
+    href="http://localhost:4000/"/>
   <generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator>
   <rights> © 2026 koh11235813 </rights>
   <icon>/assets/img/favicons/favicon.ico</icon>
@@ -20,14 +20,42 @@
 
   
   <entry>
+    <title>gitの使い方とか</title>
+    <link href="http://localhost:4000/posts/how-to-use-git/" rel="alternate" type="text/html" title="gitの使い方とか" />
+    <published>2026-03-05T00:00:00+09:00</published>
+  
+    <updated>2026-03-05T00:00:00+09:00</updated>
+  
+    <id>http://localhost:4000/posts/how-to-use-git/</id>
+    <content type="text/html" src="http://localhost:4000/posts/how-to-use-git/" />
+    <author>
+      <name>koh11235813</name>
+    </author>
+
+  
+    
+    <category term="linux" />
+    
+    <category term="git" />
+    
+    <category term="shell" />
+    
+  
+
+  <summary>gitの使い方とか  まずgitとは？     Git（ギット2345）は、プログラムのソースコードなどの変更履歴を記録・追跡するための分散型バージョン管理システムである。Linuxカーネルのソースコード管理に用いるためにリーナス・トーバルズによって開発され、それ以降ほかの多くのプロジェクトで採用されている。Linuxカーネルのような巨大プロジェクトにも対応できるように、動作速度に重点が置かれている。現在のメンテナは濱野純 (英語: Junio C Hamano) で、2005年7月から担当している。    Gitでは、各ユーザのワーキングディレクトリに、全履歴を含んだリポジトリの完全な複製が作られる。したがって、ネットワークにアクセスできないなどの理由で中心リポジトリにアクセスできない環境でも、履歴の調査や変更の記録といったほとんどの作業を行うことができる。これが「分散型」と呼ばれ...</summary>
+
+  </entry>
+
+  
+  <entry>
     <title>サーバーにVPNなどを利用して学外からアクセスする方法</title>
-    <link href="https://koh11235813.github.io/posts/ssh_login_with_vpn/" rel="alternate" type="text/html" title="サーバーにVPNなどを利用して学外からアクセスする方法" />
+    <link href="http://localhost:4000/posts/ssh_login_with_vpn/" rel="alternate" type="text/html" title="サーバーにVPNなどを利用して学外からアクセスする方法" />
     <published>2025-10-20T00:00:00+09:00</published>
   
     <updated>2025-10-20T00:00:00+09:00</updated>
   
-    <id>https://koh11235813.github.io/posts/ssh_login_with_vpn/</id>
-    <content type="text/html" src="https://koh11235813.github.io/posts/ssh_login_with_vpn/" />
+    <id>http://localhost:4000/posts/ssh_login_with_vpn/</id>
+    <content type="text/html" src="http://localhost:4000/posts/ssh_login_with_vpn/" />
     <author>
       <name>kinoko1943</name>
     </author>
@@ -45,13 +73,13 @@
   
   <entry>
     <title>Wireplumber下でオーディオルーティング</title>
-    <link href="https://koh11235813.github.io/posts/wireplumber-settings/" rel="alternate" type="text/html" title="Wireplumber下でオーディオルーティング" />
+    <link href="http://localhost:4000/posts/wireplumber-settings/" rel="alternate" type="text/html" title="Wireplumber下でオーディオルーティング" />
     <published>2025-08-17T00:00:00+09:00</published>
   
     <updated>2025-08-17T00:00:00+09:00</updated>
   
-    <id>https://koh11235813.github.io/posts/wireplumber-settings/</id>
-    <content type="text/html" src="https://koh11235813.github.io/posts/wireplumber-settings/" />
+    <id>http://localhost:4000/posts/wireplumber-settings/</id>
+    <content type="text/html" src="http://localhost:4000/posts/wireplumber-settings/" />
     <author>
       <name>kinoko1943</name>
     </author>
@@ -69,13 +97,13 @@
   
   <entry>
     <title>minecraftのサーバーの設定とか</title>
-    <link href="https://koh11235813.github.io/posts/minecraftserver/" rel="alternate" type="text/html" title="minecraftのサーバーの設定とか" />
+    <link href="http://localhost:4000/posts/minecraftserver/" rel="alternate" type="text/html" title="minecraftのサーバーの設定とか" />
     <published>2025-05-23T00:00:00+09:00</published>
   
     <updated>2025-05-23T00:00:00+09:00</updated>
   
-    <id>https://koh11235813.github.io/posts/minecraftserver/</id>
-    <content type="text/html" src="https://koh11235813.github.io/posts/minecraftserver/" />
+    <id>http://localhost:4000/posts/minecraftserver/</id>
+    <content type="text/html" src="http://localhost:4000/posts/minecraftserver/" />
     <author>
       <name>kinoko1943</name>
     </author>
@@ -93,13 +121,13 @@
   
   <entry>
     <title>pihole を RHEL9 へ移管したときのメモ</title>
-    <link href="https://koh11235813.github.io/posts/pihole-to-rhel/" rel="alternate" type="text/html" title="pihole を RHEL9 へ移管したときのメモ" />
+    <link href="http://localhost:4000/posts/pihole-to-rhel/" rel="alternate" type="text/html" title="pihole を RHEL9 へ移管したときのメモ" />
     <published>2025-05-21T00:00:00+09:00</published>
   
     <updated>2025-05-21T00:00:00+09:00</updated>
   
-    <id>https://koh11235813.github.io/posts/pihole-to-rhel/</id>
-    <content type="text/html" src="https://koh11235813.github.io/posts/pihole-to-rhel/" />
+    <id>http://localhost:4000/posts/pihole-to-rhel/</id>
+    <content type="text/html" src="http://localhost:4000/posts/pihole-to-rhel/" />
     <author>
       <name>kinoko1943</name>
     </author>
