@@ -205,3 +205,9 @@ $ git status
 分岐したブランチは他のブランチの影響を受けないため、同じリポジトリ内で複数の変更を同時に進めていくことができます。
 
 ![branch figure](/assets/img/git-practice-git-branch-fig.png)
+
+ブランチの変更を他のブランチに統合することをマージ(merge)といいます。下の図で矢印の先が別のブランチを指しているものはマージを行なっています。
+
+![branch merge](/assets/img/git-practice-git-branch-merge.png)
+
+
