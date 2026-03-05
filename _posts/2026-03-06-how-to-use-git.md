@@ -9,11 +9,11 @@ categories: [linux,git,shell]
 
 ## まずgitとは？
 
-> Git（ギット[2](https://www.youtube.com/watch?v=4XpnKHJAok8&t=90s)[3](https://e-words.jp/w/Git.html)[4](https://www.idcf.jp/words/git.html)[5](https://books.google.co.jp/books/about/%E5%85%A5%E9%96%80Git_%E3%82%AE%E3%83%83%E3%83%88.html?id=N2bQLbQRO6wC&redir_esc=y)）は、プログラムのソースコードなどの変更履歴を記録・追跡するための分散型バージョン管理システムである。Linuxカーネルのソースコード管理に用いるためにリーナス・トーバルズによって開発され、それ以降ほかの多くのプロジェクトで採用されている。Linuxカーネルのような巨大プロジェクトにも対応できるように、動作速度に重点が置かれている。現在のメンテナは濱野純 (英語: Junio C Hamano) で、2005年7月から担当している。
+> Git（ギット<small>[[2]](https://www.youtube.com/watch?v=4XpnKHJAok8&t=90s)[[3]](https://e-words.jp/w/Git.html)[[4]](https://www.idcf.jp/words/git.html)[[5]](https://books.google.co.jp/books/about/%E5%85%A5%E9%96%80Git_%E3%82%AE%E3%83%83%E3%83%88.html?id=N2bQLbQRO6wC&redir_esc=y)</small>）は、プログラムのソースコードなどの変更履歴を記録・追跡するための分散型バージョン管理システムである。Linuxカーネルのソースコード管理に用いるためにリーナス・トーバルズによって開発され、それ以降ほかの多くのプロジェクトで採用されている。Linuxカーネルのような巨大プロジェクトにも対応できるように、動作速度に重点が置かれている。現在のメンテナは濱野純 (英語: Junio C Hamano) で、2005年7月から担当している。
 >
 > Gitでは、各ユーザのワーキングディレクトリに、全履歴を含んだリポジトリの完全な複製が作られる。したがって、ネットワークにアクセスできないなどの理由で中心リポジトリにアクセスできない環境でも、履歴の調査や変更の記録といったほとんどの作業を行うことができる。これが「分散型」と呼ばれる理由である。
 >
-> 2025年、SCM市場で87%のシェアを占めている[6](https://japan.zdnet.com/article/35231917/2/)。
+> 2025年、SCM市場で87%のシェアを占めている<small>[[6]](https://japan.zdnet.com/article/35231917/2/)</small>。
 <small>[wikipedia](wikipedia.org/wiki/Git)より</small>
 
 バージョン管理システム(Version Control System; eg.vcs)の1つです。
@@ -118,7 +118,7 @@ Gitがバージョン管理下に置く場所をリポジトリ(repository)と�
 
 ユーザーが変更の履歴を記録する作業をコミット(commit)と呼びます。
 
-コミットには前回との差分が保存されています。コミットには必ずコミットメッセージを言うコメントをつける必要があります。
+コミットには前回との差分が保存されています。コミットには必ずコミットメッセージというコメントをつける必要があります。
 
 ![commit](/assets/img/git-practice-repo.png)
 
