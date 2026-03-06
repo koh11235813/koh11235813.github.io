@@ -1,9 +1,11 @@
 ---
 title: gitの使い方とか
-date: 2026-03-06
+date: 2026-03-06 00:00:00 +0900
 author: koh11235813
 layout: post
-categories: [linux,git,shell]
+toc: true
+comments: false
+categories: [git,shell]
 ---
 
 
@@ -200,7 +202,7 @@ $ git status
 `Changes not staged for commit`: 変更されたファイルがあり、ステージされていない。
 `modified:   hoge.txt`: `hoge.txt`が変更されている。
 
-`git diff`では差分を確認できます。。
+`git diff`では差分を確認できます。
 `+Git 完全に理解した`: 追加された行。先頭に`+`が追加、`-`が削除された行。
 
 再びコミットを行ってみましょう
@@ -304,7 +306,7 @@ Gitによるバージョン管理する場所をリポジトリと呼びます�
 
 今回はGitHubを使います。
 
-## GitHubとは
+### GitHubとは
 
 - 開発者のためのプラットフォーム
 - 世界中の人々の優れたコードが公開されていて、 コミュニケーションをとれる
@@ -330,3 +332,118 @@ github.ioによる静的サイトの公開が可能
 
 
 ### リモートリポジトリの作成
+
+![new repository](/assets/img/git-practice-new-repository.png)
+
+![create repository](/assets/img/git-practice-create-new-repository.png)
+
+![setup repository](/assets/img/git-practice-setup-remote-repository.png)
+
+#### 最初のpushまで
+
+先ほどまで使用していたディレクトリで行います。[画像の一番下のコマンド(...ro push an existing repository from the command line)](#リモートリポジトリの作成)を順に打ち込んでいきます。
+
+![git remote add](/assets/img/git-practice-git-remote-add.png)
+
+途中でユーザー名とパスワードを聞かれていますが、この認証はOSによって異なります。
+Windowsの場合はブラウザで認証できるはずです。
+
+アップロードが終わってブラウザをリロードすると以下のようなページになっているはずです。
+
+![git remote repository](/assets/img/git-practice-git-remote-repository.png)
+
+### コマンド解説
+
+`git branch -M main`: 現在のブランチ名をmainブランチに強制変更
+
+`git remote add origin https://github.com/koh11235813/git-practice.git`: リモートリポジトリの追加、originという名前でURLの場所がリモートリポジトリとして追加される。
+
+`git push -u origin main` :
+
+`git push origin main`はmainブランチをoriginにpushするコマンド
+`-u`オプションは上流ブランチ(upstream)を設定するオプション
+
+リモートにあるブランチのことを上流ブランチ(upstream)と呼ぶ。
+
+ローカルブランチが更新を追いかけるリモートブランチのこと
+
+今回の場合、以降はmainブランチ内で `git push`だけでローカルのmainブランチをリモートのmainブランチにpushできるが、本来は `git push origin <リモートブランチ名>`
+
+`git remote -v`: 設定されているリモートリポジトリのURLを参照できる。
+
+### GitHubを使ってみる
+
+`README.md` を適当に追加して、add、commitします。
+
+`git push origin main`
+
+originのmainブランチに現在のブランチをpush
+
+リモートのmainブランチはローカルのmainブランチの上流ブランチなので `git push`でも同じ
+
+![git push](/assets/img/git-practice-readme.png)
+
+GitHubのリモートリポジトリに変更が反映されます。
+
+![git remote view](/assets/img/git-practice-remote-view.png)
+
+README.mdなどのテキストファイルはGitHub上で編集できます。リポジトリのREADME.mdの右上にあるペンマークをクリックして編集します。
+
+![readme edit](/assets/img/git-practice-readme-edit.png)
+
+右上の`Commit changes...`をクリックするとコミットメッセージを入力できるダイアログが表示されます。
+
+![remote commit](/assets/img/git-practice-remote-commit.png)
+
+このようにWebブラウザ上からでも編集できます。
+
+![remote changed](/assets/img/git-practice-remote-changed.png)
+
+ローカルリポジトリにリモートリポジトリの変更を持って来てみましょう。 `git pull origin main`を実行して、originのmainブランチの変更を現在のブランチに反映しましょう。ログを確認すると、GitHub上で変更したリモートリポジトリの内容がローカルリポジトリに取り込まれていることがわかります。(`git push`と同じように`git pull`をmainブランチ上で行った場合も`git pull origin main`と同じ意味を持ちます。)
+
+![git pull](/assets/img/git-practice-git-pull.png)
+
+### PullRequest
+
+- リモートリポジトリのブランチを別のブランチにmergeする要求を送ることができます。
+- 変更箇所、コミット履歴の表示
+- 複数人で開発しているときに、ソースコードに関するコミュニケーションが発生します。
+- コードレビューを必須にし、一定の承認が無いとマージ出来ないような設定にできます。
+
+画像は卒研のリポジトリでGPGPUサポートを行った時のPullRequestです。
+
+![pull request](/assets/img/git-practice-pull-request.png)
+
+### Issue
+
+- プロジェクトのバグ、機能追加、要望、問題点等について発言する場所
+- issueに基づいてブランチを切ったりする、タスク管理としての運用
+
+![issue](/assets/img/git-practice-issue.png)
+
+### Contribution
+
+- GitHubの機能を使うと、Contributionが増えます。
+
+    masterへのコミット
+
+    Issue、Pull requestの作成
+
+    review?
+
+- 毎日作業したくなり、モチベになります
+- 日にち毎に合計され、1つでもContributionしていれば緑色になります。
+
+多いほど明るい色
+
+別名「草を生やす」
+
+- 偽装可能
+- ハロウィンの日だけ色が変わります
+
+![contribution](/assets/img/git-practice-contribution.png)
+
+### Gitクライアント
+
+コマンドを入力せずにGUI上でGitの操作可能なツール
+GitGUI、GitHub Desktop、SourceTree、GitKrakenなど
