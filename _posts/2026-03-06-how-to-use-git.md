@@ -31,9 +31,9 @@ total 28
 drwxr-xr-x  2 kinoko kinoko 4096 Mar  5 22:05  ./
 drwxr-xr-x 25 kinoko kinoko 4096 Mar  5 21:57  ../
 -rw-r--r--  1 kinoko kinoko  352 Mar  1 21:58  run_copy.py
--rw-r--r--  1 kinoko kinoko  383 Fed 28 21:58  run_koh.py
+-rw-r--r--  1 kinoko kinoko  383 Feb 28 21:58  run_koh.py
 -rw-r--r--  1 kinoko kinoko  330 Mar  1 21:59  run_latest.py
--rw-r--r--  1 kinoko kinoko  341 Fed 22 09:58  run.py
+-rw-r--r--  1 kinoko kinoko  341 Feb 22 09:58  run.py
 -rw-r--r--  1 kinoko kinoko  351 Mar  2 22:04  run_最新版.py
 -rw-r--r--  1 kinoko kinoko  347 Mar  5 21:35 'run_最新版 - コピー(2).py'
 -rw-r--r--  1 kinoko kinoko  319 Mar  5 22:04 'run_最新版 - コピー.py'
