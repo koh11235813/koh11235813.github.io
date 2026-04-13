@@ -101,3 +101,5 @@ exclude:
   - Source
   - Build
   - ".bundle"
+  - CLAUDE.md
+  - .claude
