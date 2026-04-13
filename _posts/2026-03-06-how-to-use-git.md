@@ -341,7 +341,7 @@ github.ioによる静的サイトの公開が可能
 
 #### 最初のpushまで
 
-先ほどまで使用していたディレクトリで行います。[画像の一番下のコマンド(...ro push an existing repository from the command line)](#リモートリポジトリの作成)を順に打ち込んでいきます。
+先ほどまで使用していたディレクトリで行います。[画像の一番下のコマンド(...or push an existing repository from the command line)](#リモートリポジトリの作成)を順に打ち込んでいきます。
 
 ![git remote add](/assets/img/git-practice-git-remote-add.png)
 

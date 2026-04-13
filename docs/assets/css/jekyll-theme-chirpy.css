@@ -1968,7 +1968,7 @@ code.filepath {
   padding: 0;
 }
 a > code.highlighter-rouge {
-  padding-bottom: 0; /* show link's underlinke */
+  padding-bottom: 0; /* show link's underline */
   color: inherit;
 }
 a:hover > code.highlighter-rouge {
@@ -2993,7 +2993,7 @@ header h1 + .post-meta {
 
 .share-mastodon {
   /* See: https://github.com/justinribeiro/share-to-mastodon#properties */
-  --wc-stm-font-family: v.$font-family-base;
+  --wc-stm-font-family: Source Sans Pro, Microsoft Yahei, sans-serif;
   --wc-stm-dialog-background-color: var(--card-bg);
   --wc-stm-form-button-border: 1px solid var(--btn-border-color);
   --wc-stm-form-submit-background-color: var(--sidebar-btn-bg);
@@ -3454,7 +3454,7 @@ header h1 + .post-meta {
   font-family: Lato, sans-serif;
 }
 #archives a {
-  /* post title in Archvies */
+  /* post title in Archives */
   margin-left: 2.5rem;
   position: relative;
   top: 0.1rem;
