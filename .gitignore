@@ -11,3 +11,5 @@ Gemfile.lock
 
 # Build artifacts (NOT docs/ - that's the GitHub Pages source)
 .sass-cache/
+# Cloudflare Workers
+.wrangler/

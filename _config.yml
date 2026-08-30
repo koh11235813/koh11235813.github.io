@@ -103,3 +103,4 @@ exclude:
   - ".bundle"
   - CLAUDE.md
   - .claude
+  - wrangler.jsonc
