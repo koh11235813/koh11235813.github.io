@@ -97,6 +97,7 @@ exclude:
   - "*.gemspec"
   - README.md
   - LICENSE
+  - LICENSE-CONTENT
   - vendor
   - Source
   - Build
